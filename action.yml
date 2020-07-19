@@ -3,3 +3,6 @@ description: "Runs all GUT tests you have for your Godot game"
 runs:
   using: 'docker'
   image: 'Dockerfile'
+branding:
+  icon: 'chevron-right'  
+  color: 'green'
