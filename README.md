@@ -16,5 +16,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-ci@v0.1.6-alpha
+    - uses: croconut/godot-tester@v0.2
 ~~~~
