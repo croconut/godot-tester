@@ -1,4 +1,4 @@
-name: "Godot test automater"
+name: "godot-tester"
 description: "Runs all GUT tests you have for your Godot game"
 runs:
   using: 'docker'
