@@ -6,7 +6,7 @@ Assumes that you have installed and are using GUT as your testing framework.
 
 ## how to use this in your workflow
  
-Checkout your repository with actions/checkoutv2 then use this action.
+Checkout your repository with actions/checkout then use this action.
 
 Example workflow:
  
