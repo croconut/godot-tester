@@ -1,7 +1,5 @@
 name: "Godot test automater"
 description: "Runs all GUT tests you have for your Godot game"
-color: green
-icon: chevron-right
 runs:
   using: 'docker'
   image: 'Dockerfile'
