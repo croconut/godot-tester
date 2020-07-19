@@ -1,4 +1,5 @@
-#!bin/shell -l
+#!/bin/sh -l
+
 ls
 ls $GITHUB_WORKSPACE
 ls $GITHUB_HOME
