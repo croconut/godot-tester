@@ -1,0 +1,5 @@
+name: "Godot test automater"
+description: "Runs your GUT tests then builds your Godot application"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
