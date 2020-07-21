@@ -1,6 +1,5 @@
 #!/bin/sh -l
 
-# enable when this is working
 set -e
 
 GODOT_VERSION=$1
@@ -8,6 +7,7 @@ PROJECT_DIRECTORY=$2
 GODOT_SERVER_TYPE="headless"
 CUSTOM_DL_PATH="~/custom_dl_folder"
 
+# if download places changes, will need updates to this if/else
 if [ $3 = "true" ] ; then 
     GODOT_RELEASE_TYPE="stable_mono"
     DL_PATH_EXTENSION=${GODOT_VERSION}/mono/
