@@ -1,0 +1,18 @@
+name: Build tester
+
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./
+      with:
+        version: "3.2.1"
+        is-mono: "true"
+        path: "tester"
+    - uses: ./
+      with:
+        version: "3.2.2"
+        path: "tester"

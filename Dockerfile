@@ -1,4 +1,4 @@
-FROM croconut/godot-test:latest
+FROM croconut/linux-downloader
 
 COPY entrypoint.sh /entrypoint.sh
 

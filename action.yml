@@ -1,8 +1,27 @@
 name: "godot-tester"
 description: "Runs all GUT tests you have for your Godot game"
+inputs:
+  version:
+    description: "Your Godot version number e.g. 3.2.2"
+    required: true
+    default: "3.2.2"
+  path:
+    description: "Give relative path to your project.godot, if not in top level of repo"
+    required: false
+    default: "./"
+  is-mono:
+    description: "Test against mono version? Default: false"
+    required: false
+    default: "false"
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+  - ${{ inputs.version }}
+  - ${{ inputs.path }}
+  - ${{ inputs.is-mono }}
+
 branding:
   icon: 'chevron-right'  
   color: 'green'
