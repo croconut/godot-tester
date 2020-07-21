@@ -26,7 +26,8 @@ cd ./${PROJECT_DIRECTORY}
 mkdir -p ${CUSTOM_DL_PATH}
 
 # setup godot environment
-wget -q --show-progress https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -P ${CUSTOM_DL_PATH}
+echo "downloading godot ..."
+wget -q https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -P ${CUSTOM_DL_PATH}
 mkdir -p ~/.cache
 mkdir -p ~/.config/godot
 echo "unzipping ..."
