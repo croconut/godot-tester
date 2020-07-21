@@ -11,4 +11,4 @@ jobs:
       with:
         version: "3.2.1"
         release-type: "stable"
-        path: "/tester"
+        path: "tester"
