@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM croconut/linux-downloader
 
 COPY entrypoint.sh /entrypoint.sh
 

@@ -23,18 +23,14 @@ fi
 
 cd ./${PROJECT_DIRECTORY}
 
-# setup linux environment
-apt-get update && apt-get install -y --no-install-recommends ca-certificates git wget unzip zip curl python python-openssl
-
-rm -rf /var/lib/apt/lists/*
-
 mkdir -p ${CUSTOM_DL_PATH}
 
 # setup godot environment
-wget https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -P ${CUSTOM_DL_PATH}
+wget -q --show-progress https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -P ${CUSTOM_DL_PATH}
 mkdir -p ~/.cache
 mkdir -p ~/.config/godot
-unzip ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ${CUSTOM_DL_PATH}
+echo "unzipping ..."
+unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ${CUSTOM_DL_PATH}
 rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
 
 # run tests & cleanup
