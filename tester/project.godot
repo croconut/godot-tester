@@ -19,6 +19,10 @@ config/name="tester"
 run/main_scene="res://main.tscn"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "gut" )
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

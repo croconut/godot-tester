@@ -9,10 +9,10 @@ inputs:
     description: "Give relative path to your project.godot, if not in top level of repo"
     required: false
     default: "./"
-  release-type:
-    description: "Release type e.g. stable (the default)"
+  is-mono:
+    description: "Test against mono version? Default: false"
     required: false
-    default: "stable"
+    default: "false"
 
 runs:
   using: 'docker'

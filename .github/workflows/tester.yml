@@ -10,5 +10,9 @@ jobs:
     - uses: ./
       with:
         version: "3.2.1"
-        release-type: "stable"
+        is-mono: "true"
+        path: "tester"
+    - uses: ./
+      with:
+        version: "3.2.2"
         path: "tester"
