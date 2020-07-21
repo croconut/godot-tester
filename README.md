@@ -1,4 +1,5 @@
 # godot-tester
+![Build tester](https://github.com/croconut/godot-tester/workflows/Build%20tester/badge.svg)
 
 A Github Action to handle automated testing of Godot applications.
 
