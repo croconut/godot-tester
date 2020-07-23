@@ -32,3 +32,7 @@ jobs:
         path: "tester"
 
 ~~~~
+
+A note on Godot associated errors: There's going to be import errors and, since you won't care about importing images 
+for testing, those don't matter and don't fail your tests. I included the viewable import errors in my test project 
+to show that they won't affect scene adding/loading in your tests.
