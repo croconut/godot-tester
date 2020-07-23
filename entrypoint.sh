@@ -31,20 +31,17 @@ wget -q https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_G
 mkdir -p ~/.cache
 mkdir -p ~/.config/godot
 echo "unzipping ..."
-unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d /usr/local/bin
-if [ $3 = "true" ] ; then
-mv /usr/local/bin/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 /usr/local/bin/godot
-else
-mv /usr/local/bin/${FULL_GODOT_NAME}${GODOT_EXTENSION} /usr/local/bin/godot
-fi
-
-# init imports with empty editor run then run tests & cleanup
-godot -e -q
-godot -d -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit
-
+unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ${CUSTOM_DL_PATH}
 rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
+
+# run tests & cleanup
 if [ $3 = "true" ] ; then
+# need to init the imports
+    ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e -q
+    ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -d -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit
     rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
 else 
+    ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e -q
+    ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -d -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit
     rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
 fi
