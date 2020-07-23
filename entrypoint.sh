@@ -30,13 +30,13 @@ echo "downloading godot ..."
 wget -q https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -P ${CUSTOM_DL_PATH}
 mkdir -p ~/.cache
 mkdir -p ~/.config/godot
-mkdir -p ~/.local/bin/godot
+mkdir -p /root/usr/local/bin/godot
 echo "unzipping ..."
-unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ~/.local/bin/godot
+unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d /root/usr/local/bin
 if [ $3 = "true" ] ; then
-mv ~/.local/bin/godot/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ~/.local/bin/godot/godot
+mv /root/usr/local/bin/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 /root/usr/local/bin/godot
 else
-mv ~/.local/bin/godot/${FULL_GODOT_NAME}${GODOT_EXTENSION} ~/.local/bin/godot/godot
+mv /root/usr/local/bin/${FULL_GODOT_NAME}${GODOT_EXTENSION} /root/usr/local/bin/godot
 fi
 
 # init imports with empty editor run then run tests & cleanup
