@@ -16,7 +16,7 @@ inputs:
   import-time:
     description: "How long to spend on importing assets, don't set if testing is not required"
     required: false
-    default: "0"
+    default: "1"
 
 runs:
   using: 'docker'
