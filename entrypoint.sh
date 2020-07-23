@@ -2,6 +2,8 @@
 
 set -e
 
+apt-get update && apt-get install coreutils
+
 GODOT_VERSION=$1
 PROJECT_DIRECTORY=$2
 GODOT_SERVER_TYPE="headless"
