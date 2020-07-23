@@ -33,9 +33,9 @@ mkdir -p ~/.config/godot
 echo "unzipping ..."
 unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ${CUSTOM_DL_PATH}
 if [ $3 = "true" ] ; then
-mv --parents ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ~/local/bin/godot
+mv ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ~/local/bin/godot
 else
-mv --parents ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ~/local/bin/godot
+mv ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ~/local/bin/godot
 fi
 
 # init imports with empty editor run then run tests & cleanup
