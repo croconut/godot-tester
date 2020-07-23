@@ -30,6 +30,8 @@ jobs:
         is-mono: "true"
         # the folder with your projects.godot file in it
         path: "tester"
+        # how long to spend importing assets before tests are run
+        import-time: "5"
 
 ~~~~
 
