@@ -13,6 +13,10 @@ inputs:
     description: "Test against mono version? Default: false"
     required: false
     default: "false"
+  import-time:
+    description: "How long to spend on importing assets, don't set if testing is not required"
+    required: false
+    default: "0"
 
 runs:
   using: 'docker'
@@ -21,6 +25,7 @@ runs:
   - ${{ inputs.version }}
   - ${{ inputs.path }}
   - ${{ inputs.is-mono }}
+  - ${{ inputs.import-time }}
 
 branding:
   icon: 'chevron-right'  

@@ -12,6 +12,7 @@ jobs:
         version: "3.2.1"
         is-mono: "true"
         path: "tester"
+        import-time: "2"
     - uses: ./
       with:
         version: "3.2.2"
