@@ -43,7 +43,7 @@ yes | unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ${C
 
 
 set +e
-# run tests & cleanup
+# run tests
 if [ IS_MONO = "true" ] ; then
 # need to init the imports
     timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
@@ -55,6 +55,8 @@ fi
 
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
 rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
+
+# parsing test output to fill test count and pass count variables
 TESTS=0
 PASSED=0
 teststring="Tests:"
@@ -81,22 +83,25 @@ while read line; do
     fi
 done <<< "$(echo "${outp}")"
 
+# ensuring failing enough tests / being timed out cause failure for
+# the action
 passrate=".0"
 endmsg=""
 if [ "$TESTS" -eq "0" ] ; then
-    exitval="1"
-    endmsg="Tests failed likely due to timeout\n"
+    exitval=1
+    endmsg="Tests failed due to timeout or there were no tests to run\n"
 else
     passrate=`echo "scale=3; $PASSED/$TESTS"|bc -l`
     
     if (( $(echo "$passrate >= $MINIMUM_PASSRATE" |bc -l) )); then
         exitval=0
     else
-        endmsg="Tests failed likely due to low passrate\n"
+        endmsg="Tests failed due to low passrate\n"
         exitval=1
     fi
 fi
 
+# messages to help debug for end user
 echo "${outp}"
 echo -e "\n${passrate} pass rate\n"
 

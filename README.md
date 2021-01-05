@@ -32,6 +32,11 @@ jobs:
         path: "tester"
         # how long to spend importing assets before tests are run
         import-time: "5"
+        # how long tests can run in seconds
+        test-timeout: "45"
+        # the ratio of tests that must pass for this action to pass
+        # e.g. 0.6 means 60% of your tests must pass
+        minimum-pass: "0.6"
 
 ~~~~
 
