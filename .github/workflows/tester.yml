@@ -16,7 +16,8 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
     - uses: ./
+      continue-on-error: true
       with:
         version: "3.2.2"
         path: "tester"
-        continue-on-error: true
+        
