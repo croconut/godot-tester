@@ -12,8 +12,19 @@ jobs:
         version: "3.2.1"
         is-mono: "true"
         path: "tester"
-        import-time: "2"
+        import-time: "5"
+        test-timeout: "45"
+        minimum-pass: "0.8"
     - uses: ./
+      continue-on-error: true
       with:
         version: "3.2.2"
         path: "tester"
+        test-timeout: "2"
+        minimum-pass: "0.8"
+    - uses: ./
+      continue-on-error: true
+      with:
+        version: "3.2.2"
+        path: "tester"
+        

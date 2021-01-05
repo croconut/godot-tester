@@ -17,6 +17,14 @@ inputs:
     description: "How long to spend on importing assets, don't set if testing is not required"
     required: false
     default: "1"
+  test-timeout:
+    description: "How long the test should be run before it's timed out and fails"
+    required: false
+    default: "300"
+  minimum-pass:
+    description: "Decimal value for minimum passing score e.g. if 88% of tests pass and minimum-pass is 0.8, then action passes."
+    required: false
+    default: "0.99"
 
 runs:
   using: 'docker'
@@ -26,6 +34,8 @@ runs:
   - ${{ inputs.path }}
   - ${{ inputs.is-mono }}
   - ${{ inputs.import-time }}
+  - ${{ inputs.test-timeout }}
+  - ${{ inputs.minimum-pass }}
 
 branding:
   icon: 'chevron-right'  

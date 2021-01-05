@@ -10,8 +10,35 @@ func before_all():
 
 func test_assert_one_less_than_two():
 	assert_true(1 < 2)
-	
+
+func test_assert_oe_less_than_two():
+	assert_true(1 < 2)
+
+func test_assert_copy():
+	assert_true(1 < 2)
+
+func test_assert_copy1():
+	assert_true(1 < 2)
+
+func test_assert_copy2():
+	assert_true(1 < 2)
+
+func test_assert_copy3():
+	assert_true(1 < 2)
+
+func test_assert_copy4():
+	assert_true(1 < 2)
+
+func test_assert_is_wrong():
+	assert_true(1 > 2)
+
+func test_wait_test():
+	yield(get_tree().create_timer(6.0), "timeout")
+	assert_true(1 < 3)	
+
 func test_load_scene() ->void:
 	scene = main_scene.instance()
 	current_scene.add_child(scene)
+	# should fail pretty hard
+	main_scene.blargh()
 	assert_eq(scene.name, current_scene.get_node(scene.name).name)
