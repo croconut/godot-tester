@@ -76,9 +76,7 @@ while read line; do
         if [[ ${#temp} -ne ${#PASSED} ]] ; then
             # the format is very questionable, need to remove a 32 from the front????
             # double checking with the if statement that the thing bugged out
-            echo "${PASSED} what's with the leading 32?"
             PASSED=${PASSED#"32"}
-            echo "${PASSED} real pass count"
         fi
     fi
 done <<< "$(echo "${outp}")"
