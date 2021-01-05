@@ -14,6 +14,9 @@ func test_assert_one_less_than_two():
 func test_assert_oe_less_than_two():
 	assert_true(1 < 2)
 
+func test_wait_test():
+	yield(get_tree().create_timer(6.0), "timeout")
+	assert_true(1 < 3)
 
 func test_assert_o_less_than_two():
 	assert_true(1 < 2)

@@ -81,17 +81,29 @@ while read line; do
     fi
 done <<< "$(echo "${outp}")"
 
+passrate=".0"
+endmsg=""
 if [ "$TESTS" -eq "0" ] ; then
     exitval="1"
+    endmsg="Tests failed likely due to timeout\n"
 else
-    exitval=`echo "scale=3; $PASSED/$TESTS"|bc -l`
-    echo "${exitval} pass rate"
-    if (( $(echo "$exitval > $MINIMUM_PASSRATE" |bc -l) )); then
+    passrate=`echo "scale=3; $PASSED/$TESTS"|bc -l`
+    
+    if (( $(echo "$passrate >= $MINIMUM_PASSRATE" |bc -l) )); then
         exitval=0
     else
+        endmsg="Tests failed likely due to low passrate\n"
         exitval=1
     fi
 fi
 
 echo "${outp}"
+echo -e "\n${passrate} pass rate\n"
+
+if [ "$endmsg" != "" ] ; then
+    echo -e "${endmsg}"
+    echo -e "Note: Tests may appear to pass on SCRIPT ERROR, but they were just ignored by GUT"
+    echo -e "This action ensures those will fail"
+fi
+
 exit ${exitval}
