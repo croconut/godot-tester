@@ -64,22 +64,17 @@ passedstring="Tests finished"
 while read line; do
     # check for line that starts with Passed:
     if [[ $line =~ ^$teststring ]] ; then
-        TESTS=${line//[!0-9]/}
+        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
+        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+        TESTS=${temp//[!0-9]/}
     elif [[ $line == *$passedstring* ]] ; then
         # heavily depends on the number passed being the first argument
         # in the line that has 'Tests finished', 
         # the only reliable count of passed tests
         temp=$(echo $line | sed 's/ .*//')
-        # btw there is no 32 prefix until this command
-        # dont ask me what's happening here :d
-        # anyways this is 100% required since bash wont recognize temp
-        # as a variable
+        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
+        temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         PASSED=${temp//[!0-9]/}
-        if [[ ${#temp} -ne ${#PASSED} ]] ; then
-            # the format is very questionable, need to remove a 32 from the front????
-            # double checking with the if statement that the thing bugged out
-            PASSED=${PASSED#"32"}
-        fi
     fi
 done <<< "$(echo "${outp}")"
 
