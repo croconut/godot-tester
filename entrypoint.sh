@@ -46,10 +46,10 @@ set +e
 # run tests
 if [ IS_MONO = "true" ] ; then
 # need to init the imports
-    timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
+    outp0=$(timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e)
     outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit)
 else
-    timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
+    outp0=$(timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e)
     outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit)
 fi
 
@@ -58,15 +58,21 @@ rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
 
 # parsing test output to fill test count and pass count variables
 TESTS=0
-PASSED=0
+FAILED=0
 teststring="Tests:"
 # new solution, need to count number of tests that were run e.g. 
 # a line that starts with "* test"
 # versus the number of tests total 
-test_contains_string="test ~ test"
-test_ran_string=" test"
-possible_tested_string="waiting"
 test_failed_string="- test"
+
+# failing a test per script error found, may be incorrect
+while read line; do
+    echo LINE: $line
+    if [[ $line == *"SCRIPT ERROR" ]] ; then
+        FAILED=$((FAILED+1))
+    fi
+done <<< "$(echo "${outp0}")"
+
 while read line; do
     # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
     temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
@@ -75,17 +81,8 @@ while read line; do
     if [[ $temp =~ ^$teststring ]] ; then    
         # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
-    elif [[ $temp == *"$test_contains_string"* ]] ; then
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        #temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        PASSED=$((PASSED+1))
-    elif [[ $temp == *"$possible_tested_string"* ]] ; then
-        if [[ $temp == *"$test_ran_string"* ]] ; then
-            PASSED=$((PASSED+1))
-            echo "found hidden test"
-        fi
     elif [[ $temp =~ ^$test_failed_string ]] ; then
-        PASSED=$((PASSED-1))
+        FAILED=$((FAILED+1))
     fi
 done <<< "$(echo "${outp}")"
 
@@ -97,7 +94,7 @@ if [ "$TESTS" -eq "0" ] ; then
     exitval=1
     endmsg="Tests failed due to timeout or there were no tests to run\n"
 else
-    passrate=`echo "scale=3; $PASSED/$TESTS"|bc -l`
+    passrate=`echo "scale=3; ($TESTS-$FAILED)/$TESTS"|bc -l`
     
     if (( $(echo "$passrate >= $MINIMUM_PASSRATE" |bc -l) )); then
         exitval=0
@@ -108,6 +105,7 @@ else
 fi
 
 # messages to help debug for end user
+echo "${outp0}"
 echo "${outp}"
 echo -e "\n${passrate} pass rate\n"
 
