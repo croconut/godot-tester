@@ -43,4 +43,5 @@ func test_load_scene() ->void:
 	current_scene.add_child(scene)
 	# should fail pretty hard
 	main_scene.blargh()
+	assert_true(11 < 4)
 	assert_eq(scene.name, current_scene.get_node(scene.name).name)
