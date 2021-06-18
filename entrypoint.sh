@@ -63,18 +63,19 @@ teststring="Tests:"
 # new solution, need to count number of tests that were run e.g. 
 # a line that starts with "* test"
 # versus the number of tests total 
-
+test_contains_string="test ~ test"
 test_ran_string="* test"
 possible_tested_string="waiting"
 test_failed_string="- test"
 while read line; do
     # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
     temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-    echo LINE: $temp
+    # can see with below line all the extra characters that echo ignores
+    # echo LINE: $temp
     if [[ $temp =~ ^$teststring ]] ; then    
         # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
-    elif [[ $temp =~ ^$test_ran_string ]] ; then
+    elif [[ $temp == *"$test_contains_string"* ]] ; then
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         #temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         PASSED=$((PASSED+1))
