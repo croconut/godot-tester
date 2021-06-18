@@ -70,6 +70,7 @@ test_failed_string="- test"
 while read line; do
     # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
     temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+    echo LINE: $temp
     if [[ $temp =~ ^$teststring ]] ; then    
         # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
