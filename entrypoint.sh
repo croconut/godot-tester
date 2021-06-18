@@ -47,10 +47,10 @@ set +e
 if [ IS_MONO = "true" ] ; then
 # need to init the imports
     outp0=$(timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e)
-    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit)
+    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit 2>&1)
 else
     outp0=$(timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e)
-    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit)
+    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit 2>&1)
 fi
 
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
@@ -64,21 +64,15 @@ teststring="Tests:"
 # a line that starts with "* test"
 # versus the number of tests total 
 test_failed_string="- test"
-errors=$(</tmp/Error)
-# failing a test per script error found, may be incorrect
-while read line; do
-    echo LINE: $line
-    if [[ $line == *"SCRIPT ERROR" ]] ; then
-        FAILED=$((FAILED+1))
-    fi
-done <<< "$(echo "${errors}")"
 
 while read line; do
     # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
     temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
     # can see with below line all the extra characters that echo ignores
-    # echo LINE: $temp
-    if [[ $temp =~ ^$teststring ]] ; then    
+    echo LINE: $temp
+    if [[ $temp == *"SCRIPT ERROR"* ]] ; then
+        FAILED=$((FAILED+1))
+    elif [[ $temp =~ ^$teststring ]] ; then    
         # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
     elif [[ $temp =~ ^$test_failed_string ]] ; then
