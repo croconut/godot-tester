@@ -68,24 +68,20 @@ test_ran_string="* test"
 possible_tested_string="waiting"
 test_failed_string="- test"
 while read line; do
-    # check for line that starts with Passed:
-    if [[ $line =~ ^$teststring ]] ; then
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+    # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
+    temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+    if [[ $temp =~ ^$teststring ]] ; then    
+        # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
-    elif [[ $line =~ ^$test_ran_string ]] ; then
-        # heavily depends on the number passed being the first argument
-        # in the line that has 'Tests finished', 
-        # the only reliable count of passed asserts
-        #temp=$(echo $line | sed 's/ .*//')
+    elif [[ $temp =~ ^$test_ran_string ]] ; then
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         #temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         PASSED=$((PASSED+1))
-    elif [[ $line =~ ^$possible_tested_string ]] ; then
-        if [[ $line == *"$test_ran_string"* ]] ; then
+    elif [[ $temp =~ ^$possible_tested_string ]] ; then
+        if [[ $temp == *"$test_ran_string"* ]] ; then
             PASSED=$((PASSED+1))
         fi
-    elif [[ $line =~ ^$test_failed_string ]] ; then
+    elif [[ $temp =~ ^$test_failed_string ]] ; then
         PASSED=$((PASSED-1))
     fi
 done <<< "$(echo "${outp}")"
