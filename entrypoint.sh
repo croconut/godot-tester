@@ -82,6 +82,7 @@ while read line; do
     elif [[ $temp == *"$possible_tested_string"* ]] ; then
         if [[ $temp == *"$test_ran_string"* ]] ; then
             PASSED=$((PASSED+1))
+            echo "found hidden test"
         fi
     elif [[ $temp =~ ^$test_failed_string ]] ; then
         PASSED=$((PASSED-1))
