@@ -46,11 +46,11 @@ set +e
 # run tests
 if [ IS_MONO = "true" ] ; then
 # need to init the imports
-    timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
-    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit)
+    outp0=$(timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e 2>&1)
+    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit 2>&1)
 else
-    timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
-    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit)
+    outp0=$(timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e 2>&1)
+    outp=$(timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -s addons/gut/gut_cmdln.gd -gdir=res://test -ginclude_subdirs -gexit 2>&1)
 fi
 
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
@@ -58,36 +58,54 @@ rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
 
 # parsing test output to fill test count and pass count variables
 TESTS=0
-PASSED=0
+FAILED=0
+
+script_error_fns=()
+
 teststring="Tests:"
-passedstring="Tests finished"
+# new solution, need to count number of tests that were run e.g. 
+# a line that starts with "* test"
+# versus the number of tests total 
+test_failed_string="- test"
+script_error="SCRIPT ERROR"
+
 while read line; do
-    # check for line that starts with Passed:
-    if [[ $line =~ ^$teststring ]] ; then
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+    # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
+    temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+    # can see with below line all the extra characters that echo ignores
+    # echo LINE: $temp
+    if [[ $temp =~ ^$script_error ]] ; then
+        FAILED=$((FAILED+1))
+        t_script_err_str=$(echo $temp | awk '{print $3}')
+        t_script_err_str=${t_script_err_str%?}
+        script_error_fns+=( $t_script_err_str )
+    elif [[ $temp =~ ^$teststring ]] ; then
         TESTS=${temp//[!0-9]/}
-    elif [[ $line == *$passedstring* ]] ; then
-        # heavily depends on the number passed being the first argument
-        # in the line that has 'Tests finished', 
-        # the only reliable count of passed tests
-        temp=$(echo $line | sed 's/ .*//')
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        PASSED=${temp//[!0-9]/}
+    elif [[ $temp =~ ^$test_failed_string ]] ; then
+        FAILED=$((FAILED+1))
+        match_fn_name=$(echo $temp | awk '{print $2}')
+        for i in "${script_error_fns[@]}" ; do
+            if [ "$i" == "$match_fn_name" ] ; then
+                FAILED=$((FAILED-1))
+                break
+            fi
+        done
     fi
 done <<< "$(echo "${outp}")"
 
 # ensuring failing enough tests / being timed out cause failure for
 # the action
+echo "${outp0}"
+echo "${outp}"
+
 passrate=".0"
 endmsg=""
 if [ "$TESTS" -eq "0" ] ; then
     exitval=1
     endmsg="Tests failed due to timeout or there were no tests to run\n"
 else
-    passrate=`echo "scale=3; $PASSED/$TESTS"|bc -l`
-    
+    passrate=`echo "scale=3; ($TESTS-$FAILED)/$TESTS"|bc -l`
+    echo -e "\n${passrate} pass rate\n"
     if (( $(echo "$passrate >= $MINIMUM_PASSRATE" |bc -l) )); then
         exitval=0
     else
@@ -95,10 +113,6 @@ else
         exitval=1
     fi
 fi
-
-# messages to help debug for end user
-echo "${outp}"
-echo -e "\n${passrate} pass rate\n"
 
 if [ "$endmsg" != "" ] ; then
     echo -e "${endmsg}"
