@@ -64,7 +64,7 @@ teststring="Tests:"
 # a line that starts with "* test"
 # versus the number of tests total 
 test_contains_string="test ~ test"
-test_ran_string="* test"
+test_ran_string=" test"
 possible_tested_string="waiting"
 test_failed_string="- test"
 while read line; do
