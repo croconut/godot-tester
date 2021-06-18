@@ -59,14 +59,20 @@ rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
 # parsing test output to fill test count and pass count variables
 TESTS=0
 PASSED=0
-teststring="Tests:"
+FAILED=0
+passingstring="Passing asserts:"
+failingstring="Failing asserts:"
 passedstring="Tests finished"
 while read line; do
     # check for line that starts with Passed:
-    if [[ $line =~ ^$teststring ]] ; then
+    if [[ $line =~ ^$passingstring ]] ; then
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        TESTS=${temp//[!0-9]/}
+        PASSED=${temp//[!0-9]/}
+    elif [[ $line =~ ^$failingstring ]] ; then
+        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
+        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
+        FAILED=${temp//[!0-9]/}
     elif [[ $line == *$passedstring* ]] ; then
         # heavily depends on the number passed being the first argument
         # in the line that has 'Tests finished', 
@@ -74,7 +80,7 @@ while read line; do
         temp=$(echo $line | sed 's/ .*//')
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        PASSED=${temp//[!0-9]/}
+        TESTS=`echo "$PASSED+$FAILED"|bc -l`
     fi
 done <<< "$(echo "${outp}")"
 

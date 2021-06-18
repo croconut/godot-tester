@@ -27,6 +27,8 @@ func test_assert_copy3():
 	assert_true(1 < 2)
 
 func test_assert_copy4():
+	assert_eq(1, 2)
+	assert_true(2 < 1)
 	assert_true(1 < 2)
 
 func test_assert_is_wrong():
@@ -34,7 +36,7 @@ func test_assert_is_wrong():
 
 func test_wait_test():
 	yield(get_tree().create_timer(6.0), "timeout")
-	assert_true(1 < 3)	
+	assert_true(1 < 3)
 
 func test_load_scene() ->void:
 	scene = main_scene.instance()
