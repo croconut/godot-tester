@@ -79,7 +79,7 @@ while read line; do
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         #temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         PASSED=$((PASSED+1))
-    elif [[ $temp =~ ^$possible_tested_string ]] ; then
+    elif [[ $temp == *"$possible_tested_string"* ]] ; then
         if [[ $temp == *"$test_ran_string"* ]] ; then
             PASSED=$((PASSED+1))
         fi
