@@ -83,8 +83,10 @@ while read line; do
     elif [[ $temp =~ ^$test_failed_string ]] ; then
         FAILED=$((FAILED+1))
         match_fn_name=$(echo $temp | awk '{print $2}')
-        for i in "${array[@]}" ; do
-            if [ "$i" == "$yourValue" ] ; then
+        echo $script_error_fns
+        echo $match_fn_name
+        for i in "${script_error_fns[@]}" ; do
+            if [ "$i" == "$match_fn_name" ] ; then
                 FAILED=$((FAILED-1))
                 break
             fi
