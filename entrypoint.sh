@@ -80,13 +80,10 @@ while read line; do
         t_script_err_str=${t_script_err_str%?}
         script_error_fns+=( $t_script_err_str )
     elif [[ $temp =~ ^$teststring ]] ; then
-        # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
     elif [[ $temp =~ ^$test_failed_string ]] ; then
         FAILED=$((FAILED+1))
         match_fn_name=$(echo $temp | awk '{print $2}')
-        echo $script_error_fns
-        echo $match_fn_name
         for i in "${script_error_fns[@]}" ; do
             if [ "$i" == "$match_fn_name" ] ; then
                 FAILED=$((FAILED-1))
@@ -98,6 +95,9 @@ done <<< "$(echo "${outp}")"
 
 # ensuring failing enough tests / being timed out cause failure for
 # the action
+echo "${outp0}"
+echo "${outp}"
+
 passrate=".0"
 endmsg=""
 if [ "$TESTS" -eq "0" ] ; then
@@ -105,7 +105,7 @@ if [ "$TESTS" -eq "0" ] ; then
     endmsg="Tests failed due to timeout or there were no tests to run\n"
 else
     passrate=`echo "scale=3; ($TESTS-$FAILED)/$TESTS"|bc -l`
-    
+    echo -e "\n${passrate} pass rate\n"
     if (( $(echo "$passrate >= $MINIMUM_PASSRATE" |bc -l) )); then
         exitval=0
     else
@@ -114,10 +114,7 @@ else
     fi
 fi
 
-# messages to help debug for end user
-echo "${outp0}"
-echo "${outp}"
-echo -e "\n${passrate} pass rate\n"
+
 
 if [ "$endmsg" != "" ] ; then
     echo -e "${endmsg}"
