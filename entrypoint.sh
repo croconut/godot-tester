@@ -64,14 +64,14 @@ teststring="Tests:"
 # a line that starts with "* test"
 # versus the number of tests total 
 test_failed_string="- test"
-
+errors=$(</tmp/Error)
 # failing a test per script error found, may be incorrect
 while read line; do
     echo LINE: $line
     if [[ $line == *"SCRIPT ERROR" ]] ; then
         FAILED=$((FAILED+1))
     fi
-done <<< "$(echo "${outp0}")"
+done <<< "$(echo "${errors}")"
 
 while read line; do
     # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
