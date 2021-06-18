@@ -19,6 +19,11 @@ func test_assert_copy():
 
 func test_assert_copy1():
 	assert_true(1 < 2)
+	assert_true(3 < 2)
+	assert_true(1 < 2)
+	assert_true(2 < 2)
+	assert_true(1 < 2)
+	assert_true(1 < 2)
 
 func test_assert_copy2():
 	assert_true(1 < 2)

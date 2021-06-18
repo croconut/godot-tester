@@ -58,27 +58,35 @@ rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
 
 # parsing test output to fill test count and pass count variables
 TESTS=0
-FAILED=0
+PASSED=0
 teststring="Tests:"
 # new solution, need to count number of tests that were run e.g. 
 # a line that starts with "* test"
 # versus the number of tests total 
 
-failedstring="- test"
+test_ran_string="* test"
+possible_tested_string="waiting"
+test_failed_string="- test"
 while read line; do
     # check for line that starts with Passed:
     if [[ $line =~ ^$teststring ]] ; then
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
-    elif [[ $line =~ ^$failedstring ]] ; then
+    elif [[ $line =~ ^$test_ran_string ]] ; then
         # heavily depends on the number passed being the first argument
         # in the line that has 'Tests finished', 
         # the only reliable count of passed asserts
         #temp=$(echo $line | sed 's/ .*//')
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         #temp=$(echo $temp | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        (( ++FAILED ))
+        PASSED=$((PASSED+1))
+    elif [[ $line =~ ^$possible_tested_string ]] ; then
+        if [[ $line == *"$test_ran_string"* ]] ; then
+            PASSED=$((PASSED+1))
+        fi
+    elif [[ $line =~ ^$test_failed_string ]] ; then
+        PASSED=$((PASSED-1))
     fi
 done <<< "$(echo "${outp}")"
 
@@ -90,7 +98,7 @@ if [ "$TESTS" -eq "0" ] ; then
     exitval=1
     endmsg="Tests failed due to timeout or there were no tests to run\n"
 else
-    passrate=`echo "scale=3; ($TESTS-$FAILED)/$TESTS"|bc -l`
+    passrate=`echo "scale=3; $PASSED/$TESTS"|bc -l`
     
     if (( $(echo "$passrate >= $MINIMUM_PASSRATE" |bc -l) )); then
         exitval=0
