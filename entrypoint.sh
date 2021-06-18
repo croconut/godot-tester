@@ -114,8 +114,6 @@ else
     fi
 fi
 
-
-
 if [ "$endmsg" != "" ] ; then
     echo -e "${endmsg}"
     echo -e "Note: Tests may appear to pass on SCRIPT ERROR, but they were just ignored by GUT"
