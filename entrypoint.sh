@@ -76,7 +76,9 @@ while read line; do
     # echo LINE: $temp
     if [[ $temp =~ ^$script_error ]] ; then
         FAILED=$((FAILED+1))
-        script_error_fns+=( $(echo $temp | awk '{print $3}') )
+        t_script_err_str=$(echo $temp | awk '{print $3}')
+        t_script_err_str=${t_script_err_str%?}
+        script_error_fns+=( $t_script_err_str )
     elif [[ $temp =~ ^$teststring ]] ; then
         # temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         TESTS=${temp//[!0-9]/}
