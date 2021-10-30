@@ -35,6 +35,7 @@ runs:
   image: 'Dockerfile'
   args:
   - ${{ inputs.version }}
+  - ${{ inputs.release_type }}
   - ${{ inputs.path }}
   - ${{ inputs.is-mono }}
   - ${{ inputs.import-time }}
