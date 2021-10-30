@@ -5,6 +5,10 @@ inputs:
     description: "Your Godot version number e.g. 3.2.2"
     required: true
     default: "3.2.2"
+  release_type:
+    description: "Your Godot release type e.g. rc2, beta3"
+    required: false
+    default: "stable"
   path:
     description: "Give relative path to your project.godot, if not in top level of repo"
     required: false
@@ -38,5 +42,5 @@ runs:
   - ${{ inputs.minimum-pass }}
 
 branding:
-  icon: 'chevron-right'  
+  icon: 'chevron-right'
   color: 'green'

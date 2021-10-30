@@ -4,6 +4,7 @@
 set -e
 
 GODOT_VERSION=$1
+RELEASE_TYPE=$1
 PROJECT_DIRECTORY=$2
 IS_MONO=$3
 IMPORT_TIME=$4
@@ -13,14 +14,14 @@ GODOT_SERVER_TYPE="headless"
 CUSTOM_DL_PATH="~/custom_dl_folder"
 
 # if download places changes, will need updates to this if/else
-if [ IS_MONO = "true" ] ; then 
-    GODOT_RELEASE_TYPE="stable_mono"
+if [ IS_MONO = "true" ] ; then
+    GODOT_RELEASE_TYPE="${RELEASE_TYPE}_mono"
     DL_PATH_EXTENSION=${GODOT_VERSION}/mono/
     GODOT_EXTENSION="_64"
     # this is a folder for mono versions
     FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
 else
-    GODOT_RELEASE_TYPE="stable"
+    GODOT_RELEASE_TYPE="${RELEASE_TYPE}"
     DL_PATH_EXTENSION=${GODOT_VERSION}/
     GODOT_EXTENSION=".64"
     FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
@@ -63,9 +64,9 @@ FAILED=0
 script_error_fns=()
 
 teststring="Tests:"
-# new solution, need to count number of tests that were run e.g. 
+# new solution, need to count number of tests that were run e.g.
 # a line that starts with "* test"
-# versus the number of tests total 
+# versus the number of tests total
 test_failed_string="- test"
 script_error="SCRIPT ERROR"
 

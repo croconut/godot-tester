@@ -34,4 +34,9 @@ jobs:
       with:
         version: "3.2.2"
         path: "tester"
-        
+    - uses: ./
+      continue-on-error: true
+      with:
+        version: "3.4"
+        release_type: "rc2"
+        path: "tester"
