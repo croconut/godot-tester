@@ -27,6 +27,8 @@ jobs:
       with:
         # required
         version: "3.2.2"
+        # the type of release of godot that the tests should be run with
+        release_type: "rc2"
         is-mono: "true"
         # the folder with your projects.godot file in it
         path: "tester"
