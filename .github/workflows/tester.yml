@@ -15,6 +15,7 @@ jobs:
         import-time: "5"
         test-timeout: "45"
         minimum-pass: "0.7"
+        test-dir: "res://test"
     - uses: ./
       continue-on-error: true
       with:
