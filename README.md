@@ -39,6 +39,8 @@ jobs:
         # the ratio of tests that must pass for this action to pass
         # e.g. 0.6 means 60% of your tests must pass
         minimum-pass: "0.6"
+        # the directory containing Gut tests
+        test-dir: "res://test"
 
 ~~~~
 
