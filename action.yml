@@ -29,6 +29,10 @@ inputs:
     description: "Decimal value for minimum passing score e.g. if 88% of tests pass and minimum-pass is 0.8, then action passes."
     required: false
     default: "0.99"
+  test-dir:
+    description: "Directory containing Gut tests"
+    required: false
+    default: "res://test"
 
 runs:
   using: 'docker'
@@ -41,6 +45,7 @@ runs:
   - ${{ inputs.import-time }}
   - ${{ inputs.test-timeout }}
   - ${{ inputs.minimum-pass }}
+  - ${{ inputs.test-dir }}
 
 branding:
   icon: 'chevron-right'
