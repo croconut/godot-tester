@@ -5,10 +5,10 @@ set -e
 
 # credit: https://stackoverflow.com/questions/24283097/reusing-output-from-last-command-in-bash
 # capture the output of a command so it can be retrieved with ret
-cap () { tee ./tmp/capture.out; }
+cap () { tee /tmp/capture.out; }
 
 # return the output of the most recent command that was captured by cap
-ret () { cat ./tmp/capture.out; }
+ret () { cat /tmp/capture.out; }
 
 GODOT_VERSION=$1
 RELEASE_TYPE=$2
@@ -71,10 +71,10 @@ set +e
 # run tests
 if [ IS_MONO = "true" ] ; then
 # need to init the imports
-    timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
+    ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
     timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} | cap
 else
-    timeout ${IMPORT_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
+    ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
     timeout ${TEST_TIME} ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} | cap
 fi
 
