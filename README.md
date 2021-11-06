@@ -5,6 +5,14 @@ A Github Action to handle automated testing of Godot applications.
 
 Assumes that you have installed and are using GUT as your testing framework.
 
+## GUT CLI alternatives
+
+You can also run your own testing framework if you have a scene that can run tests on load and then exit.
+
+You would use the 'direct-scene' option for that and you'll want the output for that scene to be similar to GUT's to help this action's pass / fail to work properly.
+
+Refer to the folder "/tester/test/alt_mode" to see how to up an override test scene for GUT, for use when GUT's CLI isn't working for your project.
+
 ## setup
 
 Checkout your repository with actions/checkout then use this action.
@@ -23,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-tester@v2.1
+    - uses: croconut/godot-tester@v2.3
       with:
         # required
         version: "3.2.2"
@@ -41,6 +49,15 @@ jobs:
         minimum-pass: "0.6"
         # the directory containing Gut tests
         test-dir: "res://test"
+        # instead of running GUT's command line tool, you can run a GUT test scene if you have one
+        # set up correctly
+        # helps enable things like mouse mocking and current scene to work without any extra coding steps
+        # set up a scene like in this repo --> located at /tester/test/alt_mode/tests.tscn
+        # set up a script like in this repo --> located at /tester/test/alt_mode/cli_plugin.gd
+        # ensure cli_plugin.gd inherits from the GUT plugin
+        # and exits on test completion
+        # ensure tests.tscn uses your modified plugin script and check yes for run on load
+        direct-scene: "test/alt_mode/tests.tscn" # uses relative path from your godot project directory
 
 ~~~~
 
