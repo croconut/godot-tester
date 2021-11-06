@@ -22,7 +22,7 @@ DIRECT_SCENE=$9
 
 GODOT_SERVER_TYPE="headless"
 CUSTOM_DL_PATH="~/custom_dl_folder"
-RUN_OPTIONS=`-s addons/gut/gut_cmdln.gd -gdir=${TEST_DIR} -ginclude_subdirs -gexit`
+RUN_OPTIONS="-s addons/gut/gut_cmdln.gd -gdir=${TEST_DIR} -ginclude_subdirs -gexit"
 
 if [ "$RELEASE_TYPE" = "stable" ] ; then
     DL_PATH_SUFFIX=""
