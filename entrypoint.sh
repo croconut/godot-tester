@@ -45,7 +45,7 @@ else
 fi
 
 if [ "$DIRECT_SCENE" != "false" ] ; then
-    RUN_OPTIONS=`${DIRECT_SCENE}`
+    RUN_OPTIONS="${DIRECT_SCENE}"
 fi
 
 cd ./${PROJECT_DIRECTORY}
