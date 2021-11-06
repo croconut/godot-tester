@@ -33,6 +33,10 @@ inputs:
     description: "Directory containing Gut tests"
     required: false
     default: "res://test"
+  direct-scene:
+    description: "If instead of running the GUT command line you'd like to run a GUT scene instead: recommended to extend gut's plugin script and exit godot when all tests complete"
+    required: false
+    default: "false"
 
 runs:
   using: 'docker'
@@ -46,6 +50,7 @@ runs:
   - ${{ inputs.test-timeout }}
   - ${{ inputs.minimum-pass }}
   - ${{ inputs.test-dir }}
+  - ${{ inputs.direct-scene }}
 
 branding:
   icon: 'chevron-right'
