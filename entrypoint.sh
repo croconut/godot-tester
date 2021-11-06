@@ -116,7 +116,7 @@ while read line; do
             fi
         done
     fi
-done <<< "$(echo ret)"
+done <<< `ret`
 
 # ensuring failing enough tests / being timed out cause failure for
 # the action
