@@ -44,7 +44,7 @@ inputs:
   max-fails:
     description: "Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it"
     required: false
-    default: "-1"
+    default: "false"
 
 runs:
   using: 'docker'
