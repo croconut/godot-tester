@@ -52,8 +52,7 @@ check_by_test() {
             EXTRA_TESTS=$FAILED
             echo "script error found at $temp"
             echo failed test count increased: $FAILED
-            continue
-        elif [[ $temp =~ \*+[[:space:]]*(Run)[[:space:]]+(Summary) ]]; then
+        elif [[ $temp =~ (Run)[[:space:]]+(Summary) ]]; then
             test_set=1
             echo reached test summary
             continue
