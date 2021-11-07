@@ -68,7 +68,6 @@ check_by_test() {
             echo failed test count increased $FAILED
         elif [[ $temp =~ ^$test_flagged ]]; then
             wait_for_fail=1
-        fi
         elif [[ $temp =~ ^$teststring ]]; then
             TESTS=${temp//[!0-9]/}
             TESTS=$((TESTS + EXTRA_TESTS)) # adding script error fails that were found as additional failed tests
