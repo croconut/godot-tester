@@ -46,10 +46,10 @@ check_by_test() {
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         # can see with below line all the extra characters that echo ignores
-        echo LINE: $temp
+        # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
-            
+            echo fail count $FAILED
             t_script_err_str=$(echo $temp | awk '{print $3}')
             echo "script error found for test: ${t_script_err_str}"
             t_script_err_str=${t_script_err_str%?}
@@ -66,10 +66,12 @@ check_by_test() {
         elif [[ "$wait_for_fail" -eq "1" && $temp =~ ^[[:space:]]*(\[Failed\]) ]]; then
             wait_for_fail=0
             FAILED=$((FAILED + 1))
+            echo fail count $FAILED
             match_fn_name=$(echo $temp | awk '{print $2}')
             for i in "${script_error_fns[@]}"; do
                 if [ "$i" == "$match_fn_name" ]; then
                     FAILED=$((FAILED - 1))
+                    echo double counting, reducing fail count $FAILED
                     break
                 fi
             done
@@ -91,9 +93,10 @@ check_by_assert() {
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         # can see with below line all the extra characters that echo ignores
-        echo LINE: $temp
+        # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
+            echo fail count $FAILED
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             test_set=1
