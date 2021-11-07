@@ -57,6 +57,7 @@ jobs:
         direct-scene: "test/alt_mode/tests.tscn"
         assert-check: "true"
     - uses: ./
+      continue-on-error: true
       with:
         version: "3.2.2"
         path: "tester"
@@ -72,4 +73,4 @@ jobs:
         minimum-pass: "0.7"
         direct-scene: "test/alt_mode/tests.tscn"
         assert-check: "true"
-        max-fails: "4"
+        max-fails: "6"

@@ -30,7 +30,7 @@ cap() { tee /tmp/capture.out; }
 ret() { cat /tmp/capture.out; }
 
 check_by_test() {
-    
+
     teststring="Tests:"
     # new solution, need to count number of tests that were run e.g.
     # a line that starts with "* test"
@@ -38,7 +38,7 @@ check_by_test() {
     test_flagged="- test"
     script_error="SCRIPT ERROR"
 
-    test_set=0    
+    test_set=0
     wait_for_fail=0
     EXTRA_TESTS=0
 
@@ -52,9 +52,12 @@ check_by_test() {
             EXTRA_TESTS=$FAILED
             echo "script error found at $temp"
             echo failed test count increased: $FAILED
+            echo
+            echo
         elif [[ $temp =~ (Run)[[:space:]]+(Summary) ]]; then
             test_set=1
             echo reached test summary
+            echo
             continue
         fi
 
@@ -65,20 +68,24 @@ check_by_test() {
             FAILED=$((FAILED + 1))
             echo "test error found at $temp"
             echo failed test count increased $FAILED
+            echo
+            echo
         elif [[ $temp =~ ^$test_flagged ]]; then
             wait_for_fail=1
-            echo "possible issue with test $temp"
+            echo "possible issue with test $temp ..."
         fi
-        
+
         if [[ $temp =~ ^$teststring ]]; then
             TESTS=${temp//[!0-9]/}
             TESTS=$((TESTS + EXTRA_TESTS)) # adding script error fails that were found as additional failed tests
             echo test count, including additional script error failures: $TESTS
+            echo
+            echo
             break
         fi
 
-        
-    done <<<$(ret)
+    done \
+        <<<$(ret)
 }
 
 check_by_assert() {
@@ -98,6 +105,8 @@ check_by_assert() {
             FAILED=$((FAILED + 1))
             echo "script error found at $temp"
             echo failed test count increased: $FAILED
+            echo
+            echo
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             test_set=1
@@ -113,6 +122,8 @@ check_by_assert() {
             TESTS=$((TESTS + FAILED + passes))
             echo "total failed asserts $FAILED"
             echo "total asserts $TESTS"
+            echo
+            echo
             break
         fi
     done <<<$(ret)
@@ -198,9 +209,6 @@ else
         exitval=1
     fi
 
-    echo $MAX_FAILS
-    echo $FAILED
-
     if [[ "$MAX_FAILS" != "false" ]]; then
         if [[ "$FAILED" -gt "$MAX_FAILS" ]]; then
             endmsg="Tests failed due to fail count of ${FAILED} exceeding maximum of ${MAX_FAILS}"
@@ -212,7 +220,7 @@ fi
 if [ "$endmsg" != "" ]; then
     echo -e "Note: Tests may appear to pass on SCRIPT ERROR, but they were just ignored by GUT"
     echo -e "This action ensures those will fail"
-    echo 
+    echo
     echo -e "${endmsg}"
 fi
 
