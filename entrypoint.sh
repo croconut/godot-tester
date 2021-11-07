@@ -46,7 +46,7 @@ check_by_test() {
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         # can see with below line all the extra characters that echo ignores
-        # echo LINE: $temp
+        echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
             
@@ -91,7 +91,7 @@ check_by_assert() {
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
         temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
         # can see with below line all the extra characters that echo ignores
-        # echo LINE: $temp
+        echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
             continue
@@ -162,10 +162,10 @@ set +e
 if [ "$IS_MONO" = "true" ]; then
     # need to init the imports
     timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
-    timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} | cap
+    timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} 2>&1 | cap
 else
     timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
-    timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} | cap
+    timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} 2>&1 | cap
 fi
 
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
