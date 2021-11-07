@@ -38,7 +38,6 @@ check_by_test() {
     # versus the number of tests total
     test_flagged="- test"
     script_error="SCRIPT ERROR"
-    failed_assert="[Failed]"
 
     test_set=0    
     wait_for_fail=0
@@ -50,7 +49,9 @@ check_by_test() {
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
+            
             t_script_err_str=$(echo $temp | awk '{print $3}')
+            echo "script error found for test: ${t_script_err_str}"
             t_script_err_str=${t_script_err_str%?}
             script_error_fns+=($t_script_err_str)
             continue
@@ -62,7 +63,7 @@ check_by_test() {
 
         if [ "$test_set" -eq "0" ]; then
             continue
-        elif [[ "$wait_for_fail" -eq "1" && $temp =~ $failed_assert ]]; then
+        elif [[ "$wait_for_fail" -eq "1" && $temp =~ ^[[:space:]]*(\[Failed\]) ]]; then
             wait_for_fail=0
             FAILED=$((FAILED + 1))
             match_fn_name=$(echo $temp | awk '{print $2}')
