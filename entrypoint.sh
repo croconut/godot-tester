@@ -203,6 +203,7 @@ else
     if [[ "$MAX_FAILS" != "false" ]]; then
         if [[ "$FAILED" -gt "$MAX_FAILS" ]]; then
             endmsg="Tests failed due to fail count of ${FAILED} exceeding maximum of ${MAX_FAILS}"
+            exitval=1
         fi
     fi
 fi
