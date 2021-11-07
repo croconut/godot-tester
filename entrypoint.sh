@@ -106,6 +106,8 @@ check_by_assert() {
             fails=$(echo $temp | awk '{print $3}')
             FAILED=$((FAILED + fails))
             TESTS=$((TESTS + FAILED + passes))
+            echo "failed $FAILED"
+            echo "total $TESTS"
             break
         fi
     done <<<$(ret)
