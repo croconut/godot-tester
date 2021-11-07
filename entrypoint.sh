@@ -190,7 +190,10 @@ else
         exitval=1
     fi
 
-    if [[ "$MAX_FAILS" -ne "0" ]]; then
+    echo $MAX_FAILS
+    echo $FAILED
+
+    if [[ "$MAX_FAILS" -ne 0 ]]; then
         if [[ "$FAILED" -gt "$MAX_FAILS" ]]; then
             endmsg="Tests failed due to fail count of ${FAILED} exceeding maximum of ${MAX_FAILS}"
         fi
