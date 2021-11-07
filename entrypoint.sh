@@ -30,8 +30,9 @@ cap() { tee /tmp/capture.out; }
 ret() { cat /tmp/capture.out; }
 
 check_by_test() {
-
+    
     teststring="Tests:"
+    summary="\*Run Summary"
     # new solution, need to count number of tests that were run e.g.
     # a line that starts with "* test"
     # versus the number of tests total
@@ -40,6 +41,7 @@ check_by_test() {
 
     test_set=0    
     wait_for_fail=0
+    EXTRA_TESTS=0
 
     while read line; do
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
@@ -48,13 +50,11 @@ check_by_test() {
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
+            EXTRA_TESTS=$FAILED
             echo "script error found at $temp"
             echo failed test count increased: $FAILED
             continue
-        elif [[ $temp =~ ^$teststring ]]; then
-            TESTS=${temp//[!0-9]/}
-            TESTS=$((TESTS + FAILED)) # adding script error fails that were found as additional failed tests
-            echo test count, including additional script error failures: $TESTS
+        elif [[ $temp =~ \*+[[:space:]]*(Run)[[:space:]]+(Summary) ]]; then
             test_set=1
             continue
         fi
@@ -64,10 +64,19 @@ check_by_test() {
         elif [[ "$wait_for_fail" -eq "1" && $temp =~ ^[[:space:]]*(\[Failed\]) ]]; then
             wait_for_fail=0
             FAILED=$((FAILED + 1))
+            echo "test error found at $temp"
             echo failed test count increased $FAILED
         elif [[ $temp =~ ^$test_flagged ]]; then
             wait_for_fail=1
         fi
+        elif [[ $temp =~ ^$teststring ]]; then
+            TESTS=${temp//[!0-9]/}
+            TESTS=$((TESTS + EXTRA_TESTS)) # adding script error fails that were found as additional failed tests
+            echo test count, including additional script error failures: $TESTS
+            break
+        fi
+
+        
     done <<<$(ret)
 }
 
