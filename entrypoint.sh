@@ -30,7 +30,6 @@ cap() { tee /tmp/capture.out; }
 ret() { cat /tmp/capture.out; }
 
 check_by_test() {
-    script_error_fns=()
 
     teststring="Tests:"
     # new solution, need to count number of tests that were run e.g.
@@ -49,14 +48,13 @@ check_by_test() {
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
-            echo fail count $FAILED
-            t_script_err_str=$(echo $temp | awk '{print $3}')
-            echo "script error found for test: ${t_script_err_str}"
-            t_script_err_str=${t_script_err_str%?}
-            script_error_fns+=($t_script_err_str)
+            echo "script error found at $temp"
+            echo failed test count increased: $FAILED
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             TESTS=${temp//[!0-9]/}
+            TESTS=$((TESTS + FAILED)) # adding script error fails that were found as additional failed tests
+            echo test count, including additional script error failures: $TESTS
             test_set=1
             continue
         fi
@@ -66,15 +64,7 @@ check_by_test() {
         elif [[ "$wait_for_fail" -eq "1" && $temp =~ ^[[:space:]]*(\[Failed\]) ]]; then
             wait_for_fail=0
             FAILED=$((FAILED + 1))
-            echo fail count $FAILED
-            match_fn_name=$(echo $temp | awk '{print $2}')
-            for i in "${script_error_fns[@]}"; do
-                if [ "$i" == "$match_fn_name" ]; then
-                    FAILED=$((FAILED - 1))
-                    echo double counting, reducing fail count $FAILED
-                    break
-                fi
-            done
+            echo failed test count increased $FAILED
         elif [[ $temp =~ ^$test_flagged ]]; then
             wait_for_fail=1
         fi
@@ -96,7 +86,8 @@ check_by_assert() {
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
             FAILED=$((FAILED + 1))
-            echo fail count $FAILED
+            echo "script error found at $temp"
+            echo failed test count increased: $FAILED
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             test_set=1
@@ -110,8 +101,8 @@ check_by_assert() {
             fails=$(echo $temp | awk '{print $3}')
             FAILED=$((FAILED + fails))
             TESTS=$((TESTS + FAILED + passes))
-            echo "failed $FAILED"
-            echo "total $TESTS"
+            echo "total failed asserts $FAILED"
+            echo "total asserts $TESTS"
             break
         fi
     done <<<$(ret)
