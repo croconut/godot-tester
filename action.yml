@@ -37,6 +37,14 @@ inputs:
     description: "If instead of running the GUT command line you'd like to run a GUT scene instead: recommended to extend gut's plugin script and exit godot when all tests complete"
     required: false
     default: "false"
+  assert-check:
+    description: "Set to true to check by assert count instead of tests"
+    required: false
+    default: "false"
+  max-fails:
+    description: "Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it"
+    required: false
+    default: "false"
 
 runs:
   using: 'docker'
@@ -51,6 +59,8 @@ runs:
   - ${{ inputs.minimum-pass }}
   - ${{ inputs.test-dir }}
   - ${{ inputs.direct-scene }}
+  - ${{ inputs.assert-check }}
+  - ${{ inputs.max-fails }}
 
 branding:
   icon: 'chevron-right'
