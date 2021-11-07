@@ -185,12 +185,15 @@ else
     echo -e "\n${passrate} pass rate\n"
     if (($(echo "$passrate >= $MINIMUM_PASSRATE" | bc -l))); then
         exitval=0
-    elif [ "$MAX_FAILS" -gt "-1" && "$FAILED" -gt "$MAX_FAILS" ]; then
-        endmsg="Tests failed due to fail count of ${FAILED} exceeding maximum of ${MAX_FAILS}"
-        exitval=1
     else
         endmsg="Tests failed due to low passrate\n"
         exitval=1
+    fi
+
+    if [[ "$MAX_FAILS" -ne "0" ]]; then
+        if [[ "$FAILED" -gt "$MAX_FAILS" ]]; then
+            endmsg="Tests failed due to fail count of ${FAILED} exceeding maximum of ${MAX_FAILS}"
+        fi
     fi
 fi
 
