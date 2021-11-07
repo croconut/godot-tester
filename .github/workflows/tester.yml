@@ -48,3 +48,28 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
         direct-scene: "test/alt_mode/tests.tscn"
+    - uses: ./
+      with:
+        version: "3.2.2"
+        path: "tester"
+        test-timeout: "45"
+        minimum-pass: "0.7"
+        direct-scene: "test/alt_mode/tests.tscn"
+        assert-check: "true"
+    - uses: ./
+      with:
+        version: "3.2.2"
+        path: "tester"
+        test-timeout: "45"
+        minimum-pass: "0.7"
+        assert-check: "false"
+        max-fails: "2"
+    - uses: ./
+      with:
+        version: "3.2.2"
+        path: "tester"
+        test-timeout: "45"
+        minimum-pass: "0.7"
+        direct-scene: "test/alt_mode/tests.tscn"
+        assert-check: "true"
+        max-fails: "4"
