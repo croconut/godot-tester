@@ -32,7 +32,6 @@ ret() { cat /tmp/capture.out; }
 check_by_test() {
     
     teststring="Tests:"
-    summary="\*Run Summary"
     # new solution, need to count number of tests that were run e.g.
     # a line that starts with "* test"
     # versus the number of tests total
@@ -56,6 +55,7 @@ check_by_test() {
             continue
         elif [[ $temp =~ \*+[[:space:]]*(Run)[[:space:]]+(Summary) ]]; then
             test_set=1
+            echo reached test summary
             continue
         fi
 
@@ -68,7 +68,10 @@ check_by_test() {
             echo failed test count increased $FAILED
         elif [[ $temp =~ ^$test_flagged ]]; then
             wait_for_fail=1
-        elif [[ $temp =~ ^$teststring ]]; then
+            echo "possible issue with test $temp"
+        fi
+        
+        if [[ $temp =~ ^$teststring ]]; then
             TESTS=${temp//[!0-9]/}
             TESTS=$((TESTS + EXTRA_TESTS)) # adding script error fails that were found as additional failed tests
             echo test count, including additional script error failures: $TESTS
