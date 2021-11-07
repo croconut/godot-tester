@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-tester@v2.3
+    - uses: croconut/godot-tester@v2.4
       with:
         # required
         version: "3.2.2"
@@ -58,6 +58,9 @@ jobs:
         # and exits on test completion
         # ensure tests.tscn uses your modified plugin script and check yes for run on load
         direct-scene: "test/alt_mode/tests.tscn" # uses relative path from your godot project directory
+        assert-check: "true" # default is false, set true to count asserts instead of tests
+        max-fails: 3  # not checked by default, set to a number to limit the 
+                      # maximum amount of failed tests for a passing test suite
 
 ~~~~
 
