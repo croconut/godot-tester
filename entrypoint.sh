@@ -39,8 +39,8 @@ check_by_test() {
     script_error="SCRIPT ERROR"
     failed_assert="[Failed]"
 
-    test_set="0"
-    wait_for_fail="1"
+    test_set=0    
+    wait_for_fail=0
 
     while read line; do
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
@@ -55,14 +55,14 @@ check_by_test() {
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             TESTS=${temp//[!0-9]/}
-            test_set="1"
+            test_set=1
             continue
         fi
 
-        if [ test_set -eq "0" ]; then
+        if [ "$test_set" -eq "0" ]; then
             continue
-        elif [[ wait_for_fail -eq "1" && $temp =~ $failed_assert ]]; then
-            wait_for_fail="0"
+        elif [[ "$wait_for_fail" -eq "1" && $temp =~ $failed_assert ]]; then
+            wait_for_fail=0
             FAILED=$((FAILED + 1))
             match_fn_name=$(echo $temp | awk '{print $2}')
             for i in "${script_error_fns[@]}"; do
@@ -72,7 +72,7 @@ check_by_test() {
                 fi
             done
         elif [[ $temp =~ ^$test_flagged ]]; then
-            wait_for_fail="1"
+            wait_for_fail=1
         fi
     done <<<$(ret)
 }
@@ -83,8 +83,7 @@ check_by_assert() {
     teststring="Tests:"
     script_error="SCRIPT ERROR"
 
-    test_set="0"
-    wait_for_fail="1"
+    test_set=0
 
     while read line; do
         # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
@@ -95,11 +94,11 @@ check_by_assert() {
             FAILED=$((FAILED + 1))
             continue
         elif [[ $temp =~ ^$teststring ]]; then
-            test_set="1"
+            test_set=1
             continue
         fi
 
-        if [ test_set -eq "0" ]; then
+        if [ "$test_set" -eq "0" ]; then
             continue
         elif [[ $temp =~ ^[0-9]+[[:space:]]+(passed)[[:space:]]+[0-9]+[[:space:]]+(failed) ]]; then
             passes=$(echo $temp | awk '{print $1}')
