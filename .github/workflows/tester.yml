@@ -5,6 +5,8 @@ on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: "3.3.4"
     steps:
     - uses: actions/checkout@v2
     - uses: ./
@@ -16,8 +18,6 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
         test-dir: "res://test"
-      env:
-        GODOT_VERSION: "3.3.4"
     - uses: ./
       continue-on-error: true
       with:
