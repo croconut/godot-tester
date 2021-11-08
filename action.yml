@@ -50,10 +50,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-  - ${{ inputs.version }}
-  - ${{ inputs.release_type }}
   - ${{ inputs.path }}
-  - ${{ inputs.is-mono }}
   - ${{ inputs.import-time }}
   - ${{ inputs.test-timeout }}
   - ${{ inputs.minimum-pass }}
@@ -61,6 +58,10 @@ runs:
   - ${{ inputs.direct-scene }}
   - ${{ inputs.assert-check }}
   - ${{ inputs.max-fails }}
+  env:
+    GODOT_VERSION: ${{ inputs.version }}
+    RELEASE_TYPE: ${{ inputs.release_type }}
+    IS_MONO: ${{ inputs.is-mono }}
 
 branding:
   icon: 'chevron-right'
