@@ -50,7 +50,7 @@ build:
   using: 'docker'
   image: 'Dockerfile'
   args:
-  - ${{ env.version }}
+    VERSION: $${{ secrets.TEST_SECRET }}
 
 runs:
   using: 'docker'
