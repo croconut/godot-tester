@@ -8,6 +8,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: ./
+      env:
+        VERSION: '3.3.5'
       with:
         version: "3.2.1"
         is-mono: "true"

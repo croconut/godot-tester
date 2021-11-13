@@ -61,8 +61,8 @@ runs:
   - ${{ inputs.direct-scene }}
   - ${{ inputs.assert-check }}
   - ${{ inputs.max-fails }}
-  env:
-    ${{ secrets.TEST_SECRET }}
+  secrets:
+  - ${{ secrets.TEST_SECRET }}
 
 branding:
   icon: 'chevron-right'
