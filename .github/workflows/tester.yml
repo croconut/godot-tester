@@ -7,9 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: ./ --build-arg VERSION='3.3.5'
-      env:
-        VERSION: '3.3.5'
+    - run: echo ::set-env name=VERSION::3.3.5 
+    - uses: ./
       with:
         version: "3.2.1"
         is-mono: "true"
