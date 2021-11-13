@@ -46,6 +46,12 @@ inputs:
     required: false
     default: "false"
 
+build:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+  - ${{ inputs.version }}
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
