@@ -11,7 +11,7 @@ You can also run your own testing framework if you have a scene that can run tes
 
 You would use the 'direct-scene' option for that and you'll want the output for that scene to be similar to GUT's to help this action's pass / fail to work properly.
 
-Refer to the folder "/tester/test/alt_mode" to see how to up an override test scene for GUT, for use when GUT's CLI isn't working for your project.
+Refer to the folder "/tester/test/alt_mode" to see how to setup an override test scene for GUT, for use when GUT's CLI isn't working for your project.
 
 ## setup
 
