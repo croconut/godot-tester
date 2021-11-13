@@ -1,5 +1,10 @@
 FROM croconut/linux-downloader
 
+ARG VERSION
+RUN echo ${VERSION}
+
+FROM croconut/linux-downloader
+
 COPY entrypoint.sh /entrypoint.sh
 
 RUN printenv
