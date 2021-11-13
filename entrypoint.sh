@@ -3,6 +3,10 @@
 
 set -e
 
+echo 
+printenv
+echo
+
 GODOT_VERSION=$1
 RELEASE_TYPE=$2
 PROJECT_DIRECTORY=$3

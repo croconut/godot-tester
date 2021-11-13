@@ -33,7 +33,7 @@ jobs:
     - uses: ./
       continue-on-error: true
       with:
-        version: "3.2.2"
+        version: "3.3.4"
         path: "tester"
     - uses: ./
       continue-on-error: true
