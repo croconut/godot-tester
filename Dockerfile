@@ -1,6 +1,6 @@
 FROM croconut/linux-downloader
 
 COPY entrypoint.sh /entrypoint.sh
-RUN printenv
+RUN echo $GODOT_VERSION
 
 ENTRYPOINT [ "bash", "/entrypoint.sh" ]
