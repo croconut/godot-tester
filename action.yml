@@ -51,6 +51,7 @@ runs:
   steps:
     - name: set-partials
       id: partials
+      continue-on-error: true
       run: |
         [[ ${{ inputs.release_type }} != 'stable' ]] && echo "::set-output name=release_prefix::'___'"
         [[ ${{ inputs.release_type }} = 'stable' ]] && echo "::set-output name=release_prefix::''"
