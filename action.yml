@@ -48,7 +48,8 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://godotimage/godot:latest'
+  entrypoint: 'entrypoint.sh'
   args:
   - ${{ inputs.version }}
   - ${{ inputs.release_type }}

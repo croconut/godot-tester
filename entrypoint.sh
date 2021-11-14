@@ -16,10 +16,8 @@ DIRECT_SCENE=$9
 ASSERT_CHECK=${10}
 MAX_FAILS=${11}
 
-GODOT_SERVER_TYPE="headless"
 TESTS=0
 FAILED=0
-CUSTOM_DL_PATH="~/custom_dl_folder"
 RUN_OPTIONS="-s addons/gut/gut_cmdln.gd -gdir=${TEST_DIR} -ginclude_subdirs -gexit"
 
 # credit: https://stackoverflow.com/questions/24283097/reusing-output-from-last-command-in-bash
@@ -129,62 +127,31 @@ check_by_assert() {
     done <<<$(ret)
 }
 
-if [ "$RELEASE_TYPE" = "stable" ]; then
-    DL_PATH_SUFFIX=""
-else
-    DL_PATH_SUFFIX="/${RELEASE_TYPE}"
-fi
-
-# if download places changes, will need updates to this if/else
-if [ "$IS_MONO" = "true" ]; then
-    GODOT_RELEASE_TYPE="${RELEASE_TYPE}_mono"
-    DL_PATH_EXTENSION="${GODOT_VERSION}${DL_PATH_SUFFIX}/mono/"
-    GODOT_EXTENSION="_64"
-    # this is a folder for mono versions
-    FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
-else
-    GODOT_RELEASE_TYPE="${RELEASE_TYPE}"
-    DL_PATH_EXTENSION="${GODOT_VERSION}${DL_PATH_SUFFIX}/"
-    GODOT_EXTENSION=".64"
-    FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
-fi
-
 if [ "$DIRECT_SCENE" != "false" ]; then
     RUN_OPTIONS="${DIRECT_SCENE}"
 fi
 
 cd ./${PROJECT_DIRECTORY}
 
-mkdir -p ${CUSTOM_DL_PATH}
-
-# in case this was somehow there already, but broken
-rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
-rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
-# setup godot environment
-DL_URL="https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip"
-echo "downloading godot from ${DL_URL} ..."
-yes | wget -q ${DL_URL} -P ${CUSTOM_DL_PATH}
-mkdir -p ~/.cache
-mkdir -p ~/.config/godot
-echo "unzipping ..."
-yes | unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip -d ${CUSTOM_DL_PATH}
-chmod -R 777 ${CUSTOM_DL_PATH}
-
-echo "running test suites ..."
-
 set +e
 # run tests
-if [ "$IS_MONO" = "true" ]; then
-    # need to init the imports
-    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
-    timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} 2>&1 | cap
-else
-    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
-    timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} 2>&1 | cap
+RELEASE_ADD=""
+MONO_ADD=""
+
+GODOT_EXECUTABLE="godot_${GODOT_VERSION}"
+
+if [ "$GODOT_RELEASE_TYPE" != "stable" ]; then
+    GODOT_EXECUTABLE="${GODOT_EXECUTABLE}_${GODOT_RELEASE_TYPE}"
 fi
 
-rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
-rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
+if [ "$IS_MONO" = "true" ]; then
+    GODOT_EXECUTABLE="${GODOT_EXECUTABLE}_mono"
+fi
+
+
+timeout ${IMPORT_TIME} ${GODOT_EXECUTABLE} -e
+timeout ${TEST_TIME} ${GODOT_EXECUTABLE} 2>&1 | cap
+
 
 # parsing test output to fill test count and pass count variables
 
