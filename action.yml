@@ -51,12 +51,11 @@ runs:
   steps:
     - name: set-partials
       id: partials
-      continue-on-error: true
       run: |
-        [[ ${{ inputs.release_type }} != 'stable' ]] && echo "::set-output name=release_prefix::'___'"
-        [[ ${{ inputs.release_type }} = 'stable' ]] && echo "::set-output name=release_prefix::''"
-        [[ ${{ inputs.is-mono }} != 'false' ]] && echo "::set-output name=mono_replace::'___mono'"
-        [[ ${{ inputs.is-mono }} = 'false' ]] && echo "::set-output name=mono_replace::''"
+        [[ ${{ inputs.release_type }} != 'stable' ]] && echo "::set-output name=release_prefix::'___'" || true
+        [[ ${{ inputs.release_type }} = 'stable' ]] && echo "::set-output name=release_prefix::''" || true
+        [[ ${{ inputs.is-mono }} != 'false' ]] && echo "::set-output name=mono_replace::'___mono'" || true
+        [[ ${{ inputs.is-mono }} = 'false' ]] && echo "::set-output name=mono_replace::''" || true
       shell: bash
     - name: docker
       run: |
