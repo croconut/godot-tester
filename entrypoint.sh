@@ -3,18 +3,15 @@
 
 set -e
 
-GODOT_VERSION=$1
-RELEASE_TYPE=$2
-PROJECT_DIRECTORY=$3
-IS_MONO=$4
-IMPORT_TIME=$5
-TEST_TIME=$6
-MINIMUM_PASSRATE=$7
-TEST_DIR=$8
-DIRECT_SCENE=$9
+PROJECT_DIRECTORY=$1
+IMPORT_TIME=$2
+TEST_TIME=$3
+MINIMUM_PASSRATE=$4
+TEST_DIR=$5
+DIRECT_SCENE=$6
 # args above 9 require brackets
-ASSERT_CHECK=${10}
-MAX_FAILS=${11}
+ASSERT_CHECK=${7}
+MAX_FAILS=${8}
 
 TESTS=0
 FAILED=0
@@ -135,22 +132,9 @@ cd ./${PROJECT_DIRECTORY}
 
 set +e
 # run tests
-RELEASE_ADD=""
-MONO_ADD=""
 
-GODOT_EXECUTABLE="godot_${GODOT_VERSION}"
-
-if [ "$GODOT_RELEASE_TYPE" != "stable" ]; then
-    GODOT_EXECUTABLE="${GODOT_EXECUTABLE}_${GODOT_RELEASE_TYPE}"
-fi
-
-if [ "$IS_MONO" = "true" ]; then
-    GODOT_EXECUTABLE="${GODOT_EXECUTABLE}_mono"
-fi
-
-
-timeout ${IMPORT_TIME} ${GODOT_EXECUTABLE} -e
-timeout ${TEST_TIME} ${GODOT_EXECUTABLE} 2>&1 | cap
+timeout ${IMPORT_TIME} godot -e
+timeout ${TEST_TIME} godot 2>&1 | cap
 
 
 # parsing test output to fill test count and pass count variables

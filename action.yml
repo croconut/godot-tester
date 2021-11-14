@@ -47,21 +47,20 @@ inputs:
     default: "false"
 
 runs:
-  using: 'docker'
-  image: 'docker://godotimages/godot:latest'
-  entrypoint: 'entrypoint.sh'
-  args:
-  - ${{ inputs.version }}
-  - ${{ inputs.release_type }}
-  - ${{ inputs.path }}
-  - ${{ inputs.is-mono }}
-  - ${{ inputs.import-time }}
-  - ${{ inputs.test-timeout }}
-  - ${{ inputs.minimum-pass }}
-  - ${{ inputs.test-dir }}
-  - ${{ inputs.direct-scene }}
-  - ${{ inputs.assert-check }}
-  - ${{ inputs.max-fails }}
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: set-partials
+      id: partials
+      run: |
+        [[ ${{ inputs.release_type }} != 'stable' ]] && echo "::set-output name=release_prefix::'___'"
+        [[ ${{ inputs.release_type }} = 'stable' ]] && echo "::set-output name=release_prefix::''"
+        [[ ${{ inputs.is-mono }} != 'false' ]] && echo "::set-output name=mono_replace::'___mono'"
+        [[ ${{ inputs.is-mono }} != 'false' ]] && echo "::set-output name=mono_replace::''"
+    - container: 
+      image: 'docker://godotimages/godot:${{ inputs.version}}${{ steps.partials.outputs.release_prefix }}${{ steps.partials.outputs.mono_replace }}'
+      entrypoint: 'entrypoint.sh ${{ inputs.path }} ${{ inputs.import-time }} ${{ inputs.test-timeout }} ${{ inputs.minimum-pass }} ${{ inputs.test-dir }} ${{ inputs.direct-scene }} ${{ inputs.assert-check }} ${{ inputs.max-fails }}'
 
 branding:
   icon: 'chevron-right'
