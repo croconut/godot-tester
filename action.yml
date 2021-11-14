@@ -61,6 +61,7 @@ runs:
       run: |
         docker pull godotimages/godot:${{ inputs.version}}${{ steps.partials.outputs.release_prefix }}${{ steps.partials.outputs.mono_replace }}
         docker run --entrypoint ./entrypoint.sh ${{ inputs.path }} ${{ inputs.import-time }} ${{ inputs.test-timeout }} ${{ inputs.minimum-pass }} ${{ inputs.test-dir }} ${{ inputs.direct-scene }} ${{ inputs.assert-check }} ${{ inputs.max-fails }}
+      shell: bash
 branding:
   icon: 'chevron-right'
   color: 'green'
