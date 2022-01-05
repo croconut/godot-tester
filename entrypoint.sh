@@ -159,9 +159,7 @@ if [ "$DIRECT_SCENE" != "false" ]; then
     RUN_OPTIONS="${DIRECT_SCENE}"
 fi
 
-if [ "$CONFIG_FILE" != "res://.gutconfig.json" ]; then
-    RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
-fi
+RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
 
 cd ./${PROJECT_DIRECTORY}
 
