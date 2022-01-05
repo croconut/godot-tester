@@ -1,3 +1,4 @@
 {
-    "log_level":3
+    "log_level":3,
+    "prefix":"test_scr"
 }
