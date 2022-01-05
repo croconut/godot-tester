@@ -15,6 +15,8 @@ DIRECT_SCENE=$9
 # args above 9 require brackets
 ASSERT_CHECK=${10}
 MAX_FAILS=${11}
+IGNORE_ERROR=${12}
+CONFIG_FILE=${13}
 
 GODOT_SERVER_TYPE="headless"
 TESTS=0
@@ -48,12 +50,14 @@ check_by_test() {
         # can see with below line all the extra characters that echo ignores
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
-            FAILED=$((FAILED + 1))
-            EXTRA_TESTS=$FAILED
             echo "script error found at $temp"
-            echo failed test count increased: $FAILED
-            echo
-            echo
+            if [ ${IGNORE_ERROR} = "false" ]; then
+                FAILED=$((FAILED + 1))
+                EXTRA_TESTS=$FAILED
+                echo failed test count increased: $FAILED
+                echo
+                echo
+            fi
         elif [[ $temp =~ (Run)[[:space:]]+(Summary) ]]; then
             test_set=1
             echo reached test summary
@@ -102,11 +106,13 @@ check_by_assert() {
         # can see with below line all the extra characters that echo ignores
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
-            FAILED=$((FAILED + 1))
             echo "script error found at $temp"
-            echo failed test count increased: $FAILED
-            echo
-            echo
+            if [ ${IGNORE_ERROR} = "false" ]; then
+                FAILED=$((FAILED + 1))
+                echo failed test count increased: $FAILED
+                echo
+                echo
+            fi
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             test_set=1
@@ -153,6 +159,10 @@ if [ "$DIRECT_SCENE" != "false" ]; then
     RUN_OPTIONS="${DIRECT_SCENE}"
 fi
 
+if [ "$CONFIG_FILE" != "res://.gutconfig.json" ]; then
+    RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
+fi
+
 cd ./${PROJECT_DIRECTORY}
 
 mkdir -p ${CUSTOM_DL_PATH}
@@ -176,10 +186,10 @@ set +e
 # run tests
 if [ "$IS_MONO" = "true" ]; then
     # need to init the imports
-    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
+    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS}
     timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} 2>&1 | cap
 else
-    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
+    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS}
     timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} 2>&1 | cap
 fi
 
