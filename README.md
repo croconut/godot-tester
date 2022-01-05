@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-tester@v2.4
+    - uses: croconut/godot-tester@v2.5
       with:
         # required
         version: "3.2.2"
@@ -57,13 +57,18 @@ jobs:
         # ensure cli_plugin.gd inherits from the GUT plugin
         # and exits on test completion
         # ensure tests.tscn uses your modified plugin script and check yes for run on load
-        direct-scene: "test/alt_mode/tests.tscn" # uses relative path from your godot project directory
-        assert-check: "true" # default is false, set true to count asserts instead of tests
-        max-fails: 3  # not checked by default, set to a number to limit the 
-                      # maximum amount of failed tests for a passing test suite
+        # uses relative path from your godot project directory
+        direct-scene: "test/alt_mode/tests.tscn" 
+        # default is false, set true to count asserts instead of tests
+        assert-check: "true" 
+        # not checked by default, set to a number to limit the 
+        # maximum amount of failed tests for a passing test suite
+        max-fails: 3  
+        # to ensure all SCRIPT ERRORs dont contribute to your failure rate        
+        ignore-errors: "true" 
+        # default is GUTs default: 'res://.gutconfig.json'; set this to load a different config file
+        config-file: "res://.myconfig.json" 
 
 ~~~~
 
-Godot does not automatically import, so I'm including an option 
-to allot a specified amount of time to import your images and objects, if you 
-need these imported for your tests.
+The import process has been recently improved but you may still see issues until Godot has a native solution for CLI.

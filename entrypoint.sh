@@ -198,6 +198,10 @@ else
     timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} 2>&1 | cap
 fi
 
+# removing scene used to rebuild import files
+rm -rf ./addons/gut/.cli_add/__rebuilder.gd 
+rm -rf ./addons/gut/.cli_add/__rebuilder_scene.tscn
+
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
 rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
 
