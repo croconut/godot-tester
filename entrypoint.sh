@@ -155,11 +155,13 @@ else
     FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
 fi
 
+# these are mutually exclusive - direct scenes cannot take a config file but they can 
+# have all those options set on the scene itself anyways
 if [ "$DIRECT_SCENE" != "false" ]; then
     RUN_OPTIONS="${DIRECT_SCENE}"
+elif [ "$CONFIG_FILE" != "res://.gutconfig.json" ]; then
+    RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
 fi
-
-RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
 
 cd ./${PROJECT_DIRECTORY}
 

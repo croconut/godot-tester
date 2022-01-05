@@ -72,3 +72,7 @@ jobs:
 ~~~~
 
 The import process has been recently improved but you may still see issues until Godot has a native solution for CLI.
+
+The direct-scene and config-file options are mutually exclusive - if you use direct-scene you will need to edit that scene to reflect the GUT options you want to set.
+
+The direct scene files in /tester/test/alt_mode are a good starting point for your custom testing scene.
