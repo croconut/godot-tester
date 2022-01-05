@@ -15,6 +15,8 @@ DIRECT_SCENE=$9
 # args above 9 require brackets
 ASSERT_CHECK=${10}
 MAX_FAILS=${11}
+IGNORE_ERROR=${12}
+CONFIG_FILE=${13}
 
 GODOT_SERVER_TYPE="headless"
 TESTS=0
@@ -48,12 +50,14 @@ check_by_test() {
         # can see with below line all the extra characters that echo ignores
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
-            FAILED=$((FAILED + 1))
-            EXTRA_TESTS=$FAILED
             echo "script error found at $temp"
-            echo failed test count increased: $FAILED
-            echo
-            echo
+            if [ ${IGNORE_ERROR} = "false" ]; then
+                FAILED=$((FAILED + 1))
+                EXTRA_TESTS=$FAILED
+                echo failed test count increased: $FAILED
+                echo
+                echo
+            fi
         elif [[ $temp =~ (Run)[[:space:]]+(Summary) ]]; then
             test_set=1
             echo reached test summary
@@ -102,11 +106,13 @@ check_by_assert() {
         # can see with below line all the extra characters that echo ignores
         # echo LINE: $temp
         if [[ $temp =~ ^$script_error ]]; then
-            FAILED=$((FAILED + 1))
             echo "script error found at $temp"
-            echo failed test count increased: $FAILED
-            echo
-            echo
+            if [ ${IGNORE_ERROR} = "false" ]; then
+                FAILED=$((FAILED + 1))
+                echo failed test count increased: $FAILED
+                echo
+                echo
+            fi
             continue
         elif [[ $temp =~ ^$teststring ]]; then
             test_set=1
@@ -149,13 +155,20 @@ else
     FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
 fi
 
+# these are mutually exclusive - direct scenes cannot take a config file but they can 
+# have all those options set on the scene itself anyways
 if [ "$DIRECT_SCENE" != "false" ]; then
     RUN_OPTIONS="${DIRECT_SCENE}"
+elif [ "$CONFIG_FILE" != "res://.gutconfig.json" ]; then
+    RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
 fi
 
 cd ./${PROJECT_DIRECTORY}
 
 mkdir -p ${CUSTOM_DL_PATH}
+mkdir -p ./addons/gut/.cli_add
+mv -n /__rebuilder.gd ./addons/gut/.cli_add
+mv -n /__rebuilder_scene.tscn ./addons/gut/.cli_add
 
 # in case this was somehow there already, but broken
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
@@ -176,12 +189,18 @@ set +e
 # run tests
 if [ "$IS_MONO" = "true" ]; then
     # need to init the imports
-    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 -e
+    # workaround for -e -q and -e with timeout failing
+    # credit: https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
+    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 --editor addons/gut/.cli_add/__rebuilder_scene.tscn
     timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} 2>&1 | cap
 else
-    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} -e
+    timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} --editor addons/gut/.cli_add/__rebuilder_scene.tscn
     timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION} ${RUN_OPTIONS} 2>&1 | cap
 fi
+
+# removing scene used to rebuild import files
+rm -rf ./addons/gut/.cli_add/__rebuilder.gd 
+rm -rf ./addons/gut/.cli_add/__rebuilder_scene.tscn
 
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
 rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip

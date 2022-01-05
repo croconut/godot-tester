@@ -14,8 +14,9 @@ jobs:
         path: "tester"
         import-time: "5"
         test-timeout: "45"
-        minimum-pass: "0.7"
+        minimum-pass: "0.6"
         test-dir: "res://test"
+        config-file: "res://.gutconf.json"
     - uses: ./
       continue-on-error: true
       with:
@@ -23,6 +24,7 @@ jobs:
         path: "tester"
         test-timeout: "2"
         minimum-pass: "0.7"
+        ignore-errors: "true"
     - uses: ./
       continue-on-error: true
       with:
@@ -48,6 +50,8 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
         direct-scene: "test/alt_mode/tests.tscn"
+        config-file: "res://.gutconf.json"
+        ignore-errors: "true"
     - uses: ./
       with:
         version: "3.2.2"

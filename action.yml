@@ -45,6 +45,14 @@ inputs:
     description: "Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it"
     required: false
     default: "false"
+  ignore-errors:
+    description: "Disable Godot 'SCRIPT ERROR's from causing tests to fail"
+    required: false
+    default: "false"
+  config-file:
+    description: "Full path to your GUT config file, e.g. 'res://<path>/<config>.json'."
+    required: false
+    default: "res://.gutconfig.json"
 
 runs:
   using: 'docker'
@@ -61,6 +69,8 @@ runs:
   - ${{ inputs.direct-scene }}
   - ${{ inputs.assert-check }}
   - ${{ inputs.max-fails }}
+  - ${{ inputs.ignore-errors }}
+  - ${{ inputs.config-file }}
 
 branding:
   icon: 'chevron-right'
