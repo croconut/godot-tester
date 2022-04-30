@@ -96,7 +96,7 @@ check_by_test() {
 check_by_assert() {
     script_error_fns=()
 
-    teststring="Tests:"
+    teststring="Totals"
     script_error="SCRIPT ERROR"
 
     test_set=0
@@ -156,7 +156,7 @@ else
     FULL_GODOT_NAME=Godot_v${GODOT_VERSION}-${GODOT_RELEASE_TYPE}_linux_${GODOT_SERVER_TYPE}
 fi
 
-# these are mutually exclusive - direct scenes cannot take a config file but they can 
+# these are mutually exclusive - direct scenes cannot take a config file but they can
 # have all those options set on the scene itself anyways
 if [ "$DIRECT_SCENE" != "false" ]; then
     RUN_OPTIONS="${DIRECT_SCENE}"
@@ -205,7 +205,7 @@ else
 fi
 
 # removing scene used to rebuild import files
-rm -rf ./addons/gut/.cli_add/__rebuilder.gd 
+rm -rf ./addons/gut/.cli_add/__rebuilder.gd
 rm -rf ./addons/gut/.cli_add/__rebuilder_scene.tscn
 
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
