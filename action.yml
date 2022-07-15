@@ -53,6 +53,10 @@ inputs:
     description: "Full path to your GUT config file, e.g. 'res://<path>/<config>.json'."
     required: false
     default: "res://.gutconfig.json"
+  custom-godot-dl-url:
+    description: "URL where a precompiled, custom Godot binary will be downloaded and used instead of an official Godot binary."
+    required: false
+    default: ""
 
 runs:
   using: 'docker'
@@ -71,6 +75,7 @@ runs:
   - ${{ inputs.max-fails }}
   - ${{ inputs.ignore-errors }}
   - ${{ inputs.config-file }}
+  - ${{ inputs.custom-godot-dl-url }}
 
 branding:
   icon: 'chevron-right'
