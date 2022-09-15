@@ -50,6 +50,8 @@ check_by_test() {
             then
                 TESTS="${BASH_REMATCH[1]}"
             fi
+
+            break
         fi
     done < ./xml_output.xml
 }
