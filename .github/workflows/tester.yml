@@ -14,6 +14,7 @@ jobs:
         path: "tester"
         import-time: "5"
         test-timeout: "45"
+        minimum-pass: "0.6"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
     - uses: ./
