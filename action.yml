@@ -53,6 +53,10 @@ inputs:
     description: "Full path to your GUT config file, e.g. 'res://<path>/<config>.json'."
     required: false
     default: "res://.gutconfig.json"
+  result-output-file:
+    description: "Filename to store and read results in XML"
+    required: false
+    default: "test_results.xml"
 
 runs:
   using: 'docker'
@@ -71,6 +75,7 @@ runs:
   - ${{ inputs.max-fails }}
   - ${{ inputs.ignore-errors }}
   - ${{ inputs.config-file }}
+  - ${{ inputs.result-output-file }}
 
 branding:
   icon: 'chevron-right'

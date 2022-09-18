@@ -17,12 +17,18 @@ ASSERT_CHECK=${10}
 MAX_FAILS=${11}
 IGNORE_ERROR=${12}
 CONFIG_FILE=${13}
+RESULT_OUTPUT_FILE=${14}
 
 GODOT_SERVER_TYPE="headless"
 TESTS=0
 FAILED=0
 CUSTOM_DL_PATH="~/custom_dl_folder"
-RUN_OPTIONS="-s addons/gut/gut_cmdln.gd -gdir=${TEST_DIR} -ginclude_subdirs -gjunit_xml_file=res://xml_output.xml -gexit"
+
+RUN_OPTIONS="-s addons/gut/gut_cmdln.gd"
+RUN_OPTIONS="${RUN_OPTIONS} -gdir=${TEST_DIR}"
+RUN_OPTIONS="${RUN_OPTIONS} -ginclude_subdirs"
+RUN_OPTIONS="${RUN_OPTIONS} -gjunit_xml_file=./${RESULT_OUTPUT_FILE}"
+RUN_OPTIONS="${RUN_OPTIONS} -gexit"
 
 # credit: https://stackoverflow.com/questions/24283097/reusing-output-from-last-command-in-bash
 # capture the output of a command so it can be retrieved with ret
@@ -53,50 +59,29 @@ check_by_test() {
 
             break
         fi
-    done < ./xml_output.xml
+    done < ./${RESULT_OUTPUT_FILE}
+
+    echo "XML: Tests Detected: ${TESTS}"
+    echo "XML: Failed Tests: ${FAILED}"
 }
 
 check_by_assert() {
-    script_error_fns=()
+    while rdom; do
+        ASSERT_REGEX="assertions=\"([0-9]+)\""
 
-    teststring="Totals"
-    script_error="SCRIPT ERROR"
-
-    test_set=0
-
-    while read line; do
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        # can see with below line all the extra characters that echo ignores
-        # echo LINE: $temp
-        if [[ $temp =~ ^$script_error ]]; then
-            echo "script error found at $temp"
-            if [ ${IGNORE_ERROR} = "false" ]; then
-                FAILED=$((FAILED + 1))
-                echo failed test count increased: $FAILED
-                echo
-                echo
-            fi
-            continue
-        elif [[ $temp =~ ^$teststring ]]; then
-            test_set=1
-            continue
+        if [[ $E =~ $ASSERT_REGEX ]]
+        then
+            ((TESTS+=${BASH_REMATCH[1]}))
         fi
 
-        if [ "$test_set" -eq "0" ]; then
-            continue
-        elif [[ $temp =~ ^[0-9]+[[:space:]]+(passed)[[:space:]]+[0-9]+[[:space:]]+(failed) ]]; then
-            passes=$(echo $temp | awk '{print $1}')
-            fails=$(echo $temp | awk '{print $3}')
-            FAILED=$((FAILED + fails))
-            TESTS=$((TESTS + FAILED + passes))
-            echo "total failed asserts $FAILED"
-            echo "total asserts $TESTS"
-            echo
-            echo
-            break
+        if [[ $E =~ ^failure ]]
+        then
+            ((FAILED+=1))
         fi
-    done <<<$(ret)
+    done < ./${RESULT_OUTPUT_FILE}
+
+    echo "XML: Asserts Detected: ${TESTS}"
+    echo "XML: Failed Asserts: ${FAILED}"
 }
 
 if [ "$RELEASE_TYPE" = "stable" ]; then
@@ -176,6 +161,8 @@ if [ "$ASSERT_CHECK" != "false" ]; then
 else
     check_by_test
 fi
+
+rm -f ./${RESULT_OUTPUT_FILE}
 
 passrate=".0"
 endmsg=""

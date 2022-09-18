@@ -14,3 +14,4 @@ __meta__ = {
 _run_on_load = true
 _include_subdirectories = true
 _directory1 = "res://test/unit"
+_junit_xml_file = "res://direct_scene_xml_output.xml"
