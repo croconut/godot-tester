@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-tester@v2.5
+    - uses: croconut/godot-tester@v3
       with:
         # required
         version: "3.2.2"
@@ -68,6 +68,11 @@ jobs:
         ignore-errors: "true" 
         # default is GUTs default: 'res://.gutconfig.json'; set this to load a different config file
         config-file: "res://.myconfig.json" 
+        # designate a custom url to download the godot binary from
+        custom-godot-dl-url: ""
+        # relative path to the xml file to read / write GUT's results from, recommended
+        # for direct-scene users to check this file if you have issues
+        result-output-file: "test_results.xml"
 
 ~~~~
 
