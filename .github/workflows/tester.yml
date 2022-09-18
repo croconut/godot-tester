@@ -50,6 +50,7 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
         direct-scene: "test/alt_mode/tests.tscn"
+        result-output-file: "direct_scene_xml_output.xml"
         config-file: "res://.gutconf.json"
         ignore-errors: "true"
     - uses: ./
@@ -59,6 +60,7 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
         direct-scene: "test/alt_mode/tests.tscn"
+        result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
     - uses: ./
       continue-on-error: true
@@ -76,5 +78,6 @@ jobs:
         test-timeout: "45"
         minimum-pass: "0.7"
         direct-scene: "test/alt_mode/tests.tscn"
+        result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
         max-fails: "6"

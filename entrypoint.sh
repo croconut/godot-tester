@@ -18,12 +18,18 @@ MAX_FAILS=${11}
 IGNORE_ERROR=${12}
 CONFIG_FILE=${13}
 CUSTOM_GODOT_DL_URL=${14}
+RESULT_OUTPUT_FILE=${15}
 
 GODOT_SERVER_TYPE="headless"
 TESTS=0
 FAILED=0
 CUSTOM_DL_PATH="~/custom_dl_folder"
-RUN_OPTIONS="-s addons/gut/gut_cmdln.gd -gdir=${TEST_DIR} -ginclude_subdirs -gexit"
+
+RUN_OPTIONS="-s addons/gut/gut_cmdln.gd"
+RUN_OPTIONS="${RUN_OPTIONS} -gdir=${TEST_DIR}"
+RUN_OPTIONS="${RUN_OPTIONS} -ginclude_subdirs"
+RUN_OPTIONS="${RUN_OPTIONS} -gjunit_xml_file=./${RESULT_OUTPUT_FILE}"
+RUN_OPTIONS="${RUN_OPTIONS} -gexit"
 
 # credit: https://stackoverflow.com/questions/24283097/reusing-output-from-last-command-in-bash
 # capture the output of a command so it can be retrieved with ret
@@ -32,108 +38,51 @@ cap() { tee /tmp/capture.out; }
 # return the output of the most recent command that was captured by cap
 ret() { cat /tmp/capture.out; }
 
+# Parse XML with bash-only: 
+# https://stackoverflow.com/questions/893585/how-to-parse-xml-in-bash/2608159#2608159
+rdom () { local IFS=\> ; read -d \< E C ;}
+
 check_by_test() {
+    FAILURE_REGEX="failures=\"([0-9]+)\""
+    TESTS_REGEX="tests=\"([0-9]+)\""
 
-    teststring="Tests:"
-    # new solution, need to count number of tests that were run e.g.
-    # a line that starts with "* test"
-    # versus the number of tests total
-    test_flagged="- test"
-    script_error="SCRIPT ERROR"
-
-    test_set=0
-    wait_for_fail=0
-    EXTRA_TESTS=0
-
-    while read line; do
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        # can see with below line all the extra characters that echo ignores
-        # echo LINE: $temp
-        if [[ $temp =~ ^$script_error ]]; then
-            echo "script error found at $temp"
-            if [ ${IGNORE_ERROR} = "false" ]; then
-                FAILED=$((FAILED + 1))
-                EXTRA_TESTS=$FAILED
-                echo failed test count increased: $FAILED
-                echo
-                echo
+    while rdom; do
+        if [[ $E =~ ^testsuites ]]; then
+            if [[ $E =~ $FAILURE_REGEX ]]
+            then
+                FAILED="${BASH_REMATCH[1]}"
             fi
-        elif [[ $temp =~ (Run)[[:space:]]+(Summary) ]]; then
-            test_set=1
-            echo reached test summary
-            echo
-            continue
-        fi
 
-        if [ "$test_set" -eq "0" ]; then
-            continue
-        elif [[ "$wait_for_fail" -eq "1" && $temp =~ ^[[:space:]]*(\[Failed\]) ]]; then
-            wait_for_fail=0
-            FAILED=$((FAILED + 1))
-            echo "test error found at $temp"
-            echo failed test count increased $FAILED
-            echo
-            echo
-        elif [[ $temp =~ ^$test_flagged ]]; then
-            wait_for_fail=1
-            echo "possible issue with test $temp ..."
-        fi
+            if [[ $E =~ $TESTS_REGEX ]]
+            then
+                TESTS="${BASH_REMATCH[1]}"
+            fi
 
-        if [[ $temp =~ ^$teststring ]]; then
-            TESTS=${temp//[!0-9]/}
-            TESTS=$((TESTS + EXTRA_TESTS)) # adding script error fails that were found as additional failed tests
-            echo test count, including additional script error failures: $TESTS
-            echo
-            echo
             break
         fi
+    done < ./${RESULT_OUTPUT_FILE}
 
-    done \
-        <<<$(ret)
+    echo "XML: Tests Detected: ${TESTS}"
+    echo "XML: Failed Tests: ${FAILED}"
 }
 
 check_by_assert() {
-    script_error_fns=()
+    while rdom; do
+        ASSERT_REGEX="assertions=\"([0-9]+)\""
 
-    teststring="Totals"
-    script_error="SCRIPT ERROR"
-
-    test_set=0
-
-    while read line; do
-        # credit : https://stackoverflow.com/questions/17998978/removing-colors-from-output
-        temp=$(echo $line | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')
-        # can see with below line all the extra characters that echo ignores
-        # echo LINE: $temp
-        if [[ $temp =~ ^$script_error ]]; then
-            echo "script error found at $temp"
-            if [ ${IGNORE_ERROR} = "false" ]; then
-                FAILED=$((FAILED + 1))
-                echo failed test count increased: $FAILED
-                echo
-                echo
-            fi
-            continue
-        elif [[ $temp =~ ^$teststring ]]; then
-            test_set=1
-            continue
+        if [[ $E =~ $ASSERT_REGEX ]]
+        then
+            ((TESTS+=${BASH_REMATCH[1]}))
         fi
 
-        if [ "$test_set" -eq "0" ]; then
-            continue
-        elif [[ $temp =~ ^[0-9]+[[:space:]]+(passed)[[:space:]]+[0-9]+[[:space:]]+(failed) ]]; then
-            passes=$(echo $temp | awk '{print $1}')
-            fails=$(echo $temp | awk '{print $3}')
-            FAILED=$((FAILED + fails))
-            TESTS=$((TESTS + FAILED + passes))
-            echo "total failed tests $FAILED"
-            echo "total tests $TESTS"
-            echo
-            echo
-            break
+        if [[ $E =~ ^failure ]]
+        then
+            ((FAILED+=1))
         fi
-    done <<<$(ret)
+    done < ./${RESULT_OUTPUT_FILE}
+
+    echo "XML: Asserts Detected: ${TESTS}"
+    echo "XML: Failed Asserts: ${FAILED}"
 }
 
 if [ "$RELEASE_TYPE" = "stable" ]; then
@@ -218,6 +167,8 @@ if [ "$ASSERT_CHECK" != "false" ]; then
 else
     check_by_test
 fi
+
+rm -f ./${RESULT_OUTPUT_FILE}
 
 passrate=".0"
 endmsg=""
