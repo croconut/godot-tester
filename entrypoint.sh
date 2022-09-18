@@ -17,12 +17,18 @@ ASSERT_CHECK=${10}
 MAX_FAILS=${11}
 IGNORE_ERROR=${12}
 CONFIG_FILE=${13}
+RESULT_OUTPUT_FILE=${14}
 
 GODOT_SERVER_TYPE="headless"
 TESTS=0
 FAILED=0
 CUSTOM_DL_PATH="~/custom_dl_folder"
-RUN_OPTIONS="-s addons/gut/gut_cmdln.gd -gdir=${TEST_DIR} -ginclude_subdirs -gjunit_xml_file=res://xml_output.xml -gexit"
+
+RUN_OPTIONS="-s addons/gut/gut_cmdln.gd"
+RUN_OPTIONS="${RUN_OPTIONS} -gdir=${TEST_DIR}"
+RUN_OPTIONS="${RUN_OPTIONS} -ginclude_subdirs"
+RUN_OPTIONS="${RUN_OPTIONS} -gjunit_xml_file=./${RESULT_OUTPUT_FILE}"
+RUN_OPTIONS="${RUN_OPTIONS} -gexit"
 
 # credit: https://stackoverflow.com/questions/24283097/reusing-output-from-last-command-in-bash
 # capture the output of a command so it can be retrieved with ret
@@ -53,7 +59,7 @@ check_by_test() {
 
             break
         fi
-    done < ./xml_output.xml
+    done < ./${RESULT_OUTPUT_FILE}
 
     echo "XML: Tests Detected: ${TESTS}"
     echo "XML: Failed Tests: ${FAILED}"
@@ -72,7 +78,7 @@ check_by_assert() {
         then
             ((FAILED+=1))
         fi
-    done < ./xml_output.xml
+    done < ./${RESULT_OUTPUT_FILE}
 
     echo "XML: Asserts Detected: ${TESTS}"
     echo "XML: Failed Asserts: ${FAILED}"
@@ -156,7 +162,7 @@ else
     check_by_test
 fi
 
-rm -f ./xml_output.xml
+rm -f ./${RESULT_OUTPUT_FILE}
 
 passrate=".0"
 endmsg=""
