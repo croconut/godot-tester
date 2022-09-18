@@ -156,6 +156,8 @@ else
     check_by_test
 fi
 
+rm -f ./xml_output.xml
+
 passrate=".0"
 endmsg=""
 if [ "$TESTS" -eq "0" ]; then
