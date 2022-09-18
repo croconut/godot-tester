@@ -17,7 +17,8 @@ ASSERT_CHECK=${10}
 MAX_FAILS=${11}
 IGNORE_ERROR=${12}
 CONFIG_FILE=${13}
-RESULT_OUTPUT_FILE=${14}
+CUSTOM_GODOT_DL_URL=${14}
+RESULT_OUTPUT_FILE=${15}
 
 GODOT_SERVER_TYPE="headless"
 TESTS=0
@@ -122,8 +123,13 @@ mv -n /__rebuilder_scene.tscn ./addons/gut/.cli_add
 # in case this was somehow there already, but broken
 rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}
 rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip
+
 # setup godot environment
 DL_URL="https://downloads.tuxfamily.org/godotengine/${DL_PATH_EXTENSION}${FULL_GODOT_NAME}${GODOT_EXTENSION}.zip"
+if [ "$CUSTOM_GODOT_DL_URL" != "" ]; then
+    DL_URL="$CUSTOM_GODOT_DL_URL"
+fi
+
 echo "downloading godot from ${DL_URL} ..."
 yes | wget -q ${DL_URL} -P ${CUSTOM_DL_PATH}
 mkdir -p ~/.cache
