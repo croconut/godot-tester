@@ -172,15 +172,17 @@ run_tests() {
 
     echo "running test suites ..."
     if [ "$IS_MONO" = "true" ]; then
-        # need to init the imports
-        # workaround for -e -q and -e with timeout failing
-        # credit: https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
-        timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}/${FULL_GODOT_NAME}.64 --editor addons/gut/.cli_add/__rebuilder_scene.tscn
-        timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}/${FULL_GODOT_NAME}.64 ${RUN_OPTIONS} 2>&1 | cap
+        GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}/${FULL_GODOT_NAME}.64"
     else
-        timeout ${IMPORT_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT} --editor addons/gut/.cli_add/__rebuilder_scene.tscn
-        timeout ${TEST_TIME} ./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT} ${RUN_OPTIONS} 2>&1 | cap
+        GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}"
     fi
+
+    # need to init the imports
+    # workaround for -e -q and -e with timeout failing
+    # credit: https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
+    timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --editor addons/gut/.cli_add/__rebuilder_scene.tscn
+    # After the imports are done, we can run the tests
+    timeout ${TEST_TIME} "${GODOT_EXECUTABLE}" ${RUN_OPTIONS} 2>&1 | cap
 
     delete_gut_rebuilder
     delete_godot
