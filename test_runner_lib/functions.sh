@@ -9,6 +9,25 @@ ret() { cat /tmp/capture.out; }
 # https://stackoverflow.com/questions/893585/how-to-parse-xml-in-bash/2608159#2608159
 rdom () { local IFS=\> ; read -d \< E C ;}
 
+check_godot_version() {
+    local version=$GODOT_VERSION
+    local prev_version=3
+ 
+    # Remove the leading 'v' character if present
+    version=${version#v}
+ 
+    # Extract the major version number from the version string
+    major_version=$(echo "$version" | cut -d. -f1)
+ 
+    if [ "$major_version" -gt "$prev_version" ]; then
+        echo "Major version is greater than $prev_version. Unsupported..."
+        exit 1
+    else
+        # Add any other actions you want to perform for the else case
+        echo "Continuing..."
+    fi
+}
+
 delete_godot() {
     rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}
     rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}.zip
