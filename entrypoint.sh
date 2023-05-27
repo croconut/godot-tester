@@ -27,7 +27,7 @@ TESTS=0
 FAILED=0
 
 # Import functions
-source ./lib/functions.sh
+source ./test_runner_lib/functions.sh
 
 cd ./${PROJECT_DIRECTORY}
 
