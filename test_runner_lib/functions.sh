@@ -55,6 +55,7 @@ generate_dl_url() {
 
     FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}"
     if [[ "$IS_VERSION_FOUR" -eq "1" ]]; then
+        echo "Version 4 detected"
         # v4+ behavior
         # does not need a special headless binary
         # and has a new extension (_x86_64 | .x86_64)
@@ -66,6 +67,7 @@ generate_dl_url() {
             FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.x86_64"
         fi
     else
+        echo "Version 3 detected"
         # v3 behavior
         # must specify the headless binary
         # and the (_64 | .64) extension
