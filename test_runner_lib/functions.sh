@@ -1,10 +1,3 @@
-# credit: https://stackoverflow.com/questions/24283097/reusing-output-from-last-command-in-bash
-# capture the output of a command so it can be retrieved with ret
-cap() { tee /tmp/capture.out; }
-
-# return the output of the most recent command that was captured by cap
-ret() { cat /tmp/capture.out; }
-
 # Parse XML with bash-only: 
 # https://stackoverflow.com/questions/893585/how-to-parse-xml-in-bash/2608159#2608159
 read_xml_dom () { local IFS=\> ; read -d \< E C ;}
@@ -235,7 +228,7 @@ run_tests() {
     # credit: https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
     timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --editor addons/gut/.cli_add/__rebuilder_scene.tscn
     # After the imports are done, we can run the tests
-    timeout ${TEST_TIME} "${GODOT_EXECUTABLE}" ${RUN_OPTIONS} 2>&1 | cap
+    timeout ${TEST_TIME} "${GODOT_EXECUTABLE}" ${RUN_OPTIONS}
 
     delete_gut_rebuilder
     delete_godot
