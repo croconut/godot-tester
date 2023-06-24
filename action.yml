@@ -20,7 +20,7 @@ inputs:
   import-time:
     description: "How long to spend on importing assets, don't set if testing is not required"
     required: false
-    default: "1"
+    default: "15"
   test-timeout:
     description: "How long the test should be run before it's timed out and fails"
     required: false

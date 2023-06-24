@@ -243,7 +243,7 @@ run_tests() {
     # Added --headless to the import step to account for v4+ behavior
     # this argument on v3.x is simply ignored
     echo "running imports ..."
-    timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --headless --editor
+    timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --headless --editor addons/gut/.cli_add/__rebuilder_scene.tscn
     # After the imports are done, we can run the tests
     echo "running tests ..."
     timeout ${TEST_TIME} "${GODOT_EXECUTABLE}" ${RUN_OPTIONS}
