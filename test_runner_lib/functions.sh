@@ -124,19 +124,19 @@ generate_run_options() {
     RUN_OPTIONS="${RUN_OPTIONS} -gjunit_xml_file=./${RESULT_OUTPUT_FILE}"
     RUN_OPTIONS="${RUN_OPTIONS} -gexit"
 
-    if [ "$IS_VERSION_FOUR" -eq "1" ]; then
-        # v4+ behavior
-        # you must use the --headless argument 
-        # rather than use a headless binary
-        RUN_OPTIONS="${RUN_OPTIONS} --headless"
-    fi
-
     # these are mutually exclusive - direct scenes cannot take a config file but they can
     # have all those options set on the scene itself anyways
     if [ "$DIRECT_SCENE" != "false" ]; then
         RUN_OPTIONS="${DIRECT_SCENE}"
     elif [ "$CONFIG_FILE" != "res://.gutconfig.json" ]; then
         RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
+    fi
+
+    if [ "$IS_VERSION_FOUR" -eq "1" ]; then
+        # v4+ behavior
+        # you must use the --headless argument 
+        # rather than use a headless binary
+        RUN_OPTIONS="${RUN_OPTIONS} --headless"
     fi
 }
 
