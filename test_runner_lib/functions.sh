@@ -219,6 +219,8 @@ run_tests() {
     echo "running test suites ..."
     GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}"
     if [ "$IS_MONO" = "true" ]; then
+        # mono builds are in a subdirectory of the extracted godot zip
+        # example: file_name/file_name.(x86_64|64)
         if [ "$IS_VERSION_FOUR" -eq "1" ]; then
             GODOT_EXECUTABLE="${GODOT_EXECUTABLE}/${FULL_GODOT_NAME}.x86_64"
         else
