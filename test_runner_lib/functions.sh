@@ -11,20 +11,17 @@ rdom () { local IFS=\> ; read -d \< E C ;}
 
 check_godot_version() {
     local version=$GODOT_VERSION
-    local prev_version=3
+    local version_three=3
  
     # Remove the leading 'v' character if present
     version=${version#v}
  
     # Extract the major version number from the version string
-    major_version=$(echo "$version" | cut -d. -f1)
+    local current_version=$(echo "$version" | cut -d. -f1)
  
-    if [ "$major_version" -gt "$prev_version" ]; then
-        echo "Major version is greater than $prev_version. Unsupported..."
-        exit 1
-    else
-        # Add any other actions you want to perform for the else case
-        echo "Continuing..."
+    if [ "$current_version" -gt "$version_three" ]; then
+        # v4+ behavior
+        IS_VERSION_FOUR=1
     fi
 }
 
@@ -44,7 +41,8 @@ delete_gut_rebuilder() {
     rm -rf ./addons/gut/.cli_add/__rebuilder_scene.tscn
 }
 
-generate_dl_url() {
+generate_dl_url_three() {
+    echo "generating download url ...v3"
     if [ "$RELEASE_TYPE" = "stable" ]; then
         GODOT_URL_PATH_SUBDIR=""
     else
@@ -72,6 +70,21 @@ generate_dl_url() {
 
     if [ "$CUSTOM_GODOT_DL_URL" != "" ]; then
         DL_URL="$CUSTOM_GODOT_DL_URL"
+    fi
+}
+
+generate_dl_url_four() {
+    echo "generating download url ...v4"
+    echo "v4+ is not supported yet"
+    exit 1
+}
+
+generate_dl_url() {
+    # Different behavior for v4+ and v3
+    if [[ "$IS_VERSION_FOUR" -eq "1" ]]; then
+        generate_dl_url_four
+    else
+        generate_dl_url_three
     fi
 }
 

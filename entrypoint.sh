@@ -21,6 +21,7 @@ CUSTOM_GODOT_DL_URL=${14}
 RESULT_OUTPUT_FILE=${15}
 
 # Internal variables
+IS_VERSION_FOUR=0
 exitval=1
 CUSTOM_DL_PATH="~/custom_dl_folder"
 TESTS=0
