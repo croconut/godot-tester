@@ -7,7 +7,7 @@ ret() { cat /tmp/capture.out; }
 
 # Parse XML with bash-only: 
 # https://stackoverflow.com/questions/893585/how-to-parse-xml-in-bash/2608159#2608159
-rdom () { local IFS=\> ; read -d \< E C ;}
+read_xml_dom () { local IFS=\> ; read -d \< E C ;}
 
 check_if_version_four() {
     local version=$GODOT_VERSION
@@ -144,7 +144,7 @@ check_by_test() {
     FAILURE_REGEX="failures=\"([0-9]+)\""
     TESTS_REGEX="tests=\"([0-9]+)\""
 
-    while rdom; do
+    while read_xml_dom; do
         if [[ $E =~ ^testsuites ]]; then
             if [[ $E =~ $FAILURE_REGEX ]]
             then
@@ -165,7 +165,7 @@ check_by_test() {
 }
 
 check_by_assert() {
-    while rdom; do
+    while read_xml_dom; do
         ASSERT_REGEX="assertions=\"([0-9]+)\""
 
         if [[ $E =~ $ASSERT_REGEX ]]
