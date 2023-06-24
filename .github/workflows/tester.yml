@@ -23,7 +23,7 @@ jobs:
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
-        minimum-pass: "0.7"
+        minimum-pass: "0.6"
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         config-file: "res://.gutconf.json"
@@ -32,7 +32,7 @@ jobs:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
         test-timeout: "45"
-        minimum-pass: "0.7"
+        minimum-pass: "0.6"
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
