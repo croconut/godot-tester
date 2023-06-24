@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="GutTests" failures="4" tests="11" >
+  <testsuite name="res://test/unit/test_script.gd" tests="11" failures="4" skipped="1" >
+      <testcase name="test_assert_oe_less_than_two" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy1" assertions="6" status="fail" classname="res://test/unit/test_script.gd" >
+      <failure message="failed">
+            at line -1</failure></testcase>
+      <testcase name="test_assert_one_less_than_two" assertions="0" status="pending" classname="res://test/unit/test_script.gd" >
+      <skipped message="pending"></skipped></testcase>
+      <testcase name="test_assert_copy3" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy2" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy4" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_load_scene1" assertions="2" status="fail" classname="res://test/unit/test_script.gd" >
+      <failure message="failed">
+            at line -1</failure></testcase>
+      <testcase name="test_assert_is_wrong" assertions="1" status="fail" classname="res://test/unit/test_script.gd" >
+      <failure message="failed">
+            at line -1</failure></testcase>
+      <testcase name="test_wait_test" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_load_scene" assertions="0" status="no asserts" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      </testsuite>
+  </testsuites>

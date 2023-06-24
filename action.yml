@@ -20,7 +20,7 @@ inputs:
   import-time:
     description: "How long to spend on importing assets, don't set if testing is not required"
     required: false
-    default: "1"
+    default: "15"
   test-timeout:
     description: "How long the test should be run before it's timed out and fails"
     required: false
@@ -43,10 +43,6 @@ inputs:
     default: "false"
   max-fails:
     description: "Maximum number of failing asserts or tests, if this or pass rate fails then the action will fail. Is not checked if you do not set it"
-    required: false
-    default: "false"
-  ignore-errors:
-    description: "Disable Godot 'SCRIPT ERROR's from causing tests to fail"
     required: false
     default: "false"
   config-file:
@@ -77,7 +73,6 @@ runs:
   - ${{ inputs.direct-scene }}
   - ${{ inputs.assert-check }}
   - ${{ inputs.max-fails }}
-  - ${{ inputs.ignore-errors }}
   - ${{ inputs.config-file }}
   - ${{ inputs.custom-godot-dl-url }}
   - ${{ inputs.result-output-file }}

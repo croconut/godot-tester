@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource type="Script" path="res://test/alt_mode/cli_test.gd" id="1"]
+
+[node name="Gut" type="Control"]
+offset_top = -1.0
+offset_right = 908.0
+offset_bottom = 717.0
+script = ExtResource("1")
