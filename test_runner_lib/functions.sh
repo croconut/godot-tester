@@ -43,22 +43,8 @@ delete_gut_rebuilder() {
 
 generate_dl_url_three() {
     echo "generating download url ...v3"
-    if [ "$RELEASE_TYPE" = "stable" ]; then
-        GODOT_URL_PATH_SUBDIR=""
-    else
-        # if not stable, then it's a release candidate or beta
-        # Those are located in a subdirectory of the release type
-        # example: /beta1, /rc1, etc.
-        GODOT_URL_PATH_SUBDIR="/${RELEASE_TYPE}"
-    fi
 
-    # This is the path to the godot version hosted on tuxfamily
-    # example: 3.2.3/, 3.2.3/beta1/, etc.
-    GODOT_URL_PATH="${GODOT_VERSION}${GODOT_URL_PATH_SUBDIR}/"
     if [ "$IS_MONO" = "true" ]; then
-        # mono builds are in a subdirectory of the godot version
-        # example: 3.2.3/mono/, 3.2.3/beta1/mono/, etc.
-        GODOT_URL_PATH="${GODOT_URL_PATH}mono/"
         FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}_mono_linux_headless"
         FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_64"
     else
@@ -80,6 +66,24 @@ generate_dl_url_four() {
 }
 
 generate_dl_url() {
+    if [ "$RELEASE_TYPE" = "stable" ]; then
+        GODOT_URL_PATH_SUBDIR=""
+    else
+        # if not stable, then it's a release candidate or beta
+        # Those are located in a subdirectory of the release type
+        # example: /beta1, /rc1, etc.
+        GODOT_URL_PATH_SUBDIR="/${RELEASE_TYPE}"
+    fi
+    # This is the path to the godot version hosted on tuxfamily
+    # example: 3.2.3/, 3.2.3/beta1/, etc.
+    GODOT_URL_PATH="${GODOT_VERSION}${GODOT_URL_PATH_SUBDIR}/"
+
+    if [ "$IS_MONO" = "true" ]; then
+        # mono builds are in a subdirectory of the godot version
+        # example: 3.2.3/mono/, 3.2.3/beta1/mono/, etc.
+        GODOT_URL_PATH="${GODOT_URL_PATH}mono/"
+    fi
+
     # Different behavior for v4+ and v3
     if [[ "$IS_VERSION_FOUR" -eq "1" ]]; then
         generate_dl_url_four
