@@ -51,12 +51,6 @@ generate_dl_url_three() {
         FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}_linux_headless"
         FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.64"
     fi
-
-    DL_URL="https://downloads.tuxfamily.org/godotengine/${GODOT_URL_PATH}${FULL_GODOT_NAME_EXT}.zip"
-
-    if [ "$CUSTOM_GODOT_DL_URL" != "" ]; then
-        DL_URL="$CUSTOM_GODOT_DL_URL"
-    fi
 }
 
 generate_dl_url_four() {
@@ -89,6 +83,13 @@ generate_dl_url() {
         generate_dl_url_four
     else
         generate_dl_url_three
+    fi
+
+    # Apply the generated path & name to the download url
+    DL_URL="https://downloads.tuxfamily.org/godotengine/${GODOT_URL_PATH}${FULL_GODOT_NAME_EXT}.zip"
+
+    if [ "$CUSTOM_GODOT_DL_URL" != "" ]; then
+        DL_URL="$CUSTOM_GODOT_DL_URL"
     fi
 }
 
