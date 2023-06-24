@@ -39,6 +39,15 @@ jobs:
         max-fails: "6"
     - uses: ./
       with:
+        version: "4.0.3"
+        path: "tester_GUT_v9.0.1"
+        is-mono: "true"
+        test-timeout: "45"
+        minimum-pass: "0.7"
+        assert-check: "false"
+        max-fails: "2"
+    - uses: ./
+      with:
         version: "3.2.1"
         is-mono: "true"
         path: "tester_GUT_v7.4.1"
