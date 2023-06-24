@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="GutTests" failures="7" tests="17">
-      <testsuite name="res://test/resources/exporter_test_files/test_simple_2.gd" tests="3" failures="1" skipped="1">
-            <testcase name="test_pass" assertions="1" status="pass" classname="res://test/resources/exporter_test_files/test_simple_2.gd"></testcase>
-            <testcase name="test_pending" assertions="0" status="pending" classname="res://test/resources/exporter_test_files/test_simple_2.gd">
-                  <skipped message="pending">this has text</skipped>
-            </testcase>
+<testsuites name="GutTests" failures="4" tests="11" >
+  <testsuite name="res://test/unit/test_script.gd" tests="11" failures="4" skipped="1" >
+      <testcase name="test_assert_oe_less_than_two" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy1" assertions="6" status="fail" classname="res://test/unit/test_script.gd" >
+      <failure message="failed">
+            at line -1</failure></testcase>
+      <testcase name="test_assert_one_less_than_two" assertions="0" status="pending" classname="res://test/unit/test_script.gd" >
+      <skipped message="pending"></skipped></testcase>
+      <testcase name="test_assert_copy3" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy2" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_assert_copy4" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_load_scene1" assertions="2" status="fail" classname="res://test/unit/test_script.gd" >
+      <failure message="failed">
+            at line -1</failure></testcase>
+      <testcase name="test_assert_is_wrong" assertions="1" status="fail" classname="res://test/unit/test_script.gd" >
+      <failure message="failed">
+            at line -1</failure></testcase>
+      <testcase name="test_wait_test" assertions="1" status="pass" classname="res://test/unit/test_script.gd" >
+      </testcase>
+      <testcase name="test_load_scene" assertions="0" status="no asserts" classname="res://test/unit/test_script.gd" >
+      </testcase>
       </testsuite>
-      <testsuite name="res://test/resources/exporter_test_files/test_simple.gd" tests="8" failures="4" skipped="2">
-            <testcase name="test_pending_with_text" assertions="0" status="pending" classname="res://test/resources/exporter_test_files/test_simple.gd">
-                  <skipped message="pending">this has text</skipped>
-            </testcase>
-            <testcase name="test_parameterized_passing" assertions="4" status="pass" classname="res://test/resources/exporter_test_files/test_simple.gd"></testcase>
-            <testcase name="test_pending_no_text" assertions="0" status="pending" classname="res://test/resources/exporter_test_files/test_simple.gd">
-                  <skipped message="pending"></skipped>
-            </testcase>
-            <testcase name="test_pass_1" assertions="1" status="pass" classname="res://test/resources/exporter_test_files/test_simple.gd"></testcase>
-            <testcase name="test_pass_2" assertions="1" status="pass" classname="res://test/resources/exporter_test_files/test_simple.gd"></testcase>
-            <testcase name="test_fail_1" assertions="1" status="fail" classname="res://test/resources/exporter_test_files/test_simple.gd">
-                  <failure message="failed">Cannot compare Int[1] to String["two"].
-            at line 10</failure>
-            </testcase>
-      </testsuite>
-      <testsuite name="res://test/resources/exporter_test_files/test_with_inner_classes.gd" tests="0" failures="0" skipped="0"></testsuite>
-      <testsuite name="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassOne" tests="3" failures="1" skipped="1">
-            <testcase name="test_pending_with_text" assertions="0" status="pending" classname="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassOne">
-                  <skipped message="pending">this has text</skipped>
-            </testcase>
-            <testcase name="test_fail_1" assertions="1" status="fail" classname="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassOne">
-                  <failure message="failed">Cannot compare Int[1] to String["two"].
-            at line 11</failure>
-            </testcase>
-            <testcase name="test_pass_1" assertions="1" status="pass" classname="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassOne"></testcase>
-      </testsuite>
-      <testsuite name="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassTwo" tests="3" failures="1" skipped="1">
-            <testcase name="test_pending_with_text" assertions="0" status="pending" classname="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassTwo">
-                  <skipped message="pending">this has text</skipped>
-            </testcase>
-            <testcase name="test_pass_1" assertions="1" status="pass" classname="res://test/resources/exporter_test_files/test_with_inner_classes.gd.TestClassTwo"></testcase>
-      </testsuite>
-</testsuites>
+  </testsuites>
