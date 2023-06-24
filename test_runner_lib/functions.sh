@@ -34,30 +34,6 @@ delete_gut_rebuilder() {
     rm -rf ./addons/gut/.cli_add/__rebuilder_scene.tscn
 }
 
-generate_dl_url_three() {
-    echo "generating download url ...v3"
-
-    if [ "$IS_MONO" = "true" ]; then
-        FULL_GODOT_NAME="${FULL_GODOT_NAME}_mono_linux_headless"
-        FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_64"
-    else
-        FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux_headless"
-        FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.64"
-    fi
-}
-
-generate_dl_url_four() {
-    echo "generating download url ...v4"
-    
-    if [ "$IS_MONO" = "true" ]; then
-        FULL_GODOT_NAME="${FULL_GODOT_NAME}_mono_linux"
-        FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_x86_64"
-    else
-        FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux"
-        FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.x86_64"
-    fi
-}
-
 generate_dl_url() {
     if [ "$RELEASE_TYPE" = "stable" ]; then
         GODOT_URL_PATH_SUBDIR=""
@@ -78,11 +54,28 @@ generate_dl_url() {
     fi
 
     FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}"
-    # Different behavior for v4+ and v3
     if [[ "$IS_VERSION_FOUR" -eq "1" ]]; then
-        generate_dl_url_four
+        # v4+ behavior
+        # does not need a special headless binary
+        # and has a new extension (_x86_64 | .x86_64)
+        if [ "$IS_MONO" = "true" ]; then
+            FULL_GODOT_NAME="${FULL_GODOT_NAME}_mono_linux"
+            FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_x86_64"
+        else
+            FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux"
+            FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.x86_64"
+        fi
     else
-        generate_dl_url_three
+        # v3 behavior
+        # must specify the headless binary
+        # and the (_64 | .64) extension
+        if [ "$IS_MONO" = "true" ]; then
+            FULL_GODOT_NAME="${FULL_GODOT_NAME}_mono_linux_headless"
+            FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_64"
+        else
+            FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux_headless"
+            FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.64"
+        fi
     fi
 
     # Apply the generated path & name to the download url
