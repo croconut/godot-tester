@@ -53,16 +53,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-    - run: dotnet restore
     - uses: ./
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
         release_type: "rc2"
         is-mono: "true"
+        test-timeout: "45"
+        import-time: "60"
         minimum-pass: "0.7"
         assert-check: "false"
         max-fails: "2"  
