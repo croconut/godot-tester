@@ -1,0 +1,15 @@
+.vscode/
+# Godot-specific ignores
+.import/
+
+export.cfg
+
+#really need to make sure this has no keys in it, btw
+#export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
