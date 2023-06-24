@@ -236,16 +236,16 @@ run_tests() {
 
     generate_godot_executable_path
 
-    echo "running test suites ..."
-    
     # need to init the imports
     # workaround for -e -q and -e with timeout failing
     # credit: https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
 
     # Added --headless to the import step to account for v4+ behavior
     # this argument on v3.x is simply ignored
+    echo "running imports ..."
     timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --headless --editor
     # After the imports are done, we can run the tests
+    echo "running tests ..."
     timeout ${TEST_TIME} "${GODOT_EXECUTABLE}" ${RUN_OPTIONS}
 
     delete_gut_rebuilder
