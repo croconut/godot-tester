@@ -118,6 +118,7 @@ download_godot() {
 
 generate_run_options() {
     RUN_OPTIONS="-s addons/gut/gut_cmdln.gd"
+    IMPORT_RUN_OPTIONS="--headless --editor"
     RUN_OPTIONS="${RUN_OPTIONS} -gdir=${TEST_DIR}"
     RUN_OPTIONS="${RUN_OPTIONS} -ginclude_subdirs"
     RUN_OPTIONS="${RUN_OPTIONS} -gjunit_xml_file=./${RESULT_OUTPUT_FILE}"
@@ -137,6 +138,11 @@ generate_run_options() {
         # rather than use a headless binary
         RUN_OPTIONS="${RUN_OPTIONS} --headless"
     fi
+
+
+    if [ "$IS_MONO" = "true" ]; then
+        IMPORT_RUN_OPTIONS="${IMPORT_RUN_OPTIONS} --generate-mono-glue modules/mono/glue"
+    fi  
 }
 
 check_by_test() {
@@ -243,7 +249,8 @@ run_tests() {
     # Added --headless to the import step to account for v4+ behavior
     # this argument on v3.x is simply ignored
     echo "running imports ..."
-    timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --headless --editor addons/gut/.cli_add/__rebuilder_scene.tscn
+    
+    timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE} ${IMPORT_RUN_OPTIONS} addons/gut/.cli_add/__rebuilder_scene.tscn"
     # After the imports are done, we can run the tests
     echo "running tests ..."
     timeout ${TEST_TIME} "${GODOT_EXECUTABLE}" ${RUN_OPTIONS}
