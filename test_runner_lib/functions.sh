@@ -212,14 +212,14 @@ calculate_pass_rate() {
 }
 
 # When the mono builds are extracted, they are in a subdirectory of the zip
-# Furthermore, the executable name is different to the non-mono builds,
-# and godot 4 has a different executable name to godot 3
+# Furthermore, the executable name is the same as the linux name, but 
+# the folder name is different... so we need to account for that
 # This function generates the path to the executable
 generate_godot_executable_path() {
     GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}"
     if [ "$IS_MONO" = "true" ]; then
         # mono builds are in a subdirectory of the extracted godot zip
-        # example: file_name/file_name.(x86_64|64)
+        # example: file_name_x86_64/file_name.x86_64
         if [ "$IS_VERSION_FOUR" -eq "1" ]; then
             GODOT_EXECUTABLE="${GODOT_EXECUTABLE}/${FULL_GODOT_NAME}.x86_64"
         else
