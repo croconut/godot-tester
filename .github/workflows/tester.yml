@@ -14,7 +14,6 @@ jobs:
         minimum-pass: "0.6"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
-    - uses: actions/checkout@v2
     - uses: ./
       with:
         version: "4.0.3"
