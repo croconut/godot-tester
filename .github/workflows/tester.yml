@@ -13,6 +13,31 @@ jobs:
         path: "tester_GUT_v9.0.1"
         minimum-pass: "0.6"
         test-dir: "res://test"
+        config-file: "res://.gutconf.json"
+    - uses: actions/checkout@v2
+    - uses: ./
+      with:
+        version: "4.0.3"
+        path: "tester_GUT_v9.0.1"
+        release_type: "rc2"
+    - uses: ./
+      with:
+        version: "4.0.3"
+        path: "tester_GUT_v9.0.1"
+        minimum-pass: "0.7"
+        direct-scene: "test/alt_mode/tests.tscn"
+        result-output-file: "direct_scene_xml_output.xml"
+        config-file: "res://.gutconf.json"
+    - uses: ./
+      with:
+        version: "4.0.3"
+        path: "tester_GUT_v9.0.1"
+        test-timeout: "45"
+        minimum-pass: "0.7"
+        direct-scene: "test/alt_mode/tests.tscn"
+        result-output-file: "direct_scene_xml_output.xml"
+        assert-check: "true"
+        max-fails: "6"
     - uses: ./
       with:
         version: "3.2.1"
