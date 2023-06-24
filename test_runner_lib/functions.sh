@@ -63,8 +63,6 @@ generate_dl_url_four() {
         FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux"
         FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.x86_64"
     fi
-
-    exit 1
 }
 
 generate_dl_url() {
@@ -125,6 +123,13 @@ generate_run_options() {
     RUN_OPTIONS="${RUN_OPTIONS} -ginclude_subdirs"
     RUN_OPTIONS="${RUN_OPTIONS} -gjunit_xml_file=./${RESULT_OUTPUT_FILE}"
     RUN_OPTIONS="${RUN_OPTIONS} -gexit"
+
+    if [ "$IS_VERSION_FOUR" -eq "1" ]; then
+        # v4+ behavior
+        # you must use the --headless argument 
+        # rather than use a headless binary
+        RUN_OPTIONS="${RUN_OPTIONS} --headless"
+    fi
 
     # these are mutually exclusive - direct scenes cannot take a config file but they can
     # have all those options set on the scene itself anyways
