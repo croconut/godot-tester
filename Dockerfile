@@ -1,4 +1,5 @@
 FROM croconut/linux-downloader
+RUN apt install dotnet-sdk-6.0
 
 COPY test_runner_lib /test_runner_lib
 COPY entrypoint.sh /entrypoint.sh
