@@ -208,9 +208,6 @@ calculate_pass_rate() {
     fi
 
     if [ "$endmsg" != "" ]; then
-        echo -e "Note: Tests may appear to pass on SCRIPT ERROR, but they were just ignored by GUT"
-        echo -e "This action ensures those will fail"
-        echo
         echo -e "${endmsg}"
     fi
 }
