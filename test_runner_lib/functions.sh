@@ -93,21 +93,32 @@ generate_dl_url() {
     fi
 }
 
-download_godot() {
-    # Defining these here so they can be used later in the function
-    generate_dl_url
-
-    # Just in case there was a broken godot from a previous run
-    delete_godot
-
+perform_download() {
     mkdir -p ${CUSTOM_DL_PATH}
     echo "downloading godot from ${DL_URL} ..."
     yes | wget -q ${DL_URL} -P ${CUSTOM_DL_PATH}
+}
+
+unzip_godot() {
     mkdir -p ~/.cache
     mkdir -p ~/.config/godot
     echo "unzipping ..."
     yes | unzip -q ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}.zip -d ${CUSTOM_DL_PATH}
     chmod -R 777 ${CUSTOM_DL_PATH}
+}
+
+download_godot() {
+    # Generate the URL based on the version and release type
+    generate_dl_url
+
+    # Just in case there was a broken godot from a previous run
+    delete_godot
+
+    # Download the godot binary into the custom_dl_folder
+    perform_download
+
+    # Unzip the godot binary
+    unzip_godot
 }
 
 generate_run_options() {
@@ -205,13 +216,11 @@ calculate_pass_rate() {
     fi
 }
 
-run_tests() {
-    set +e
-
-    add_gut_rebuilder
-    generate_run_options
-
-    echo "running test suites ..."
+# When the mono builds are extracted, they are in a subdirectory of the zip
+# Furthermore, the executable name is different to the non-mono builds,
+# and godot 4 has a different executable name to godot 3
+# This function generates the path to the executable
+generate_godot_executable_path() {
     GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}"
     if [ "$IS_MONO" = "true" ]; then
         # mono builds are in a subdirectory of the extracted godot zip
@@ -222,7 +231,18 @@ run_tests() {
             GODOT_EXECUTABLE="${GODOT_EXECUTABLE}/${FULL_GODOT_NAME}.64"
         fi
     fi
+}
 
+run_tests() {
+    set +e
+
+    add_gut_rebuilder
+    generate_run_options
+
+    generate_godot_executable_path
+
+    echo "running test suites ..."
+    
     # need to init the imports
     # workaround for -e -q and -e with timeout failing
     # credit: https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
