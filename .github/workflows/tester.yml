@@ -41,6 +41,7 @@ jobs:
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
+        release_type: "rc2"
         is-mono: "true"
         test-timeout: "45"
         minimum-pass: "0.7"
