@@ -45,17 +45,25 @@ generate_dl_url_three() {
     echo "generating download url ...v3"
 
     if [ "$IS_MONO" = "true" ]; then
-        FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}_mono_linux_headless"
+        FULL_GODOT_NAME="${FULL_GODOT_NAME}_mono_linux_headless"
         FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_64"
     else
-        FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}_linux_headless"
+        FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux_headless"
         FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.64"
     fi
 }
 
 generate_dl_url_four() {
     echo "generating download url ...v4"
-    echo "v4+ is not supported yet"
+    
+    if [ "$IS_MONO" = "true" ]; then
+        FULL_GODOT_NAME="${FULL_GODOT_NAME}_mono_linux"
+        FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}_x86_64"
+    else
+        FULL_GODOT_NAME="${FULL_GODOT_NAME}_linux"
+        FULL_GODOT_NAME_EXT="${FULL_GODOT_NAME}.x86_64"
+    fi
+
     exit 1
 }
 
@@ -78,6 +86,7 @@ generate_dl_url() {
         GODOT_URL_PATH="${GODOT_URL_PATH}mono/"
     fi
 
+    FULL_GODOT_NAME="Godot_v${GODOT_VERSION}-${RELEASE_TYPE}"
     # Different behavior for v4+ and v3
     if [[ "$IS_VERSION_FOUR" -eq "1" ]]; then
         generate_dl_url_four
@@ -208,10 +217,13 @@ run_tests() {
     generate_run_options
 
     echo "running test suites ..."
+    GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}"
     if [ "$IS_MONO" = "true" ]; then
-        GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}/${FULL_GODOT_NAME}.64"
-    else
-        GODOT_EXECUTABLE="./${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}"
+        if [ "$IS_VERSION_FOUR" -eq "1" ]; then
+            GODOT_EXECUTABLE="${GODOT_EXECUTABLE}/${FULL_GODOT_NAME}.x86_64"
+        else
+            GODOT_EXECUTABLE="${GODOT_EXECUTABLE}/${FULL_GODOT_NAME}.64"
+        fi
     fi
 
     # need to init the imports
