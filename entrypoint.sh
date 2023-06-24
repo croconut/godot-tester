@@ -22,7 +22,7 @@ RESULT_OUTPUT_FILE=${14}
 # Internal variables
 IS_VERSION_FOUR=0
 exitval=1
-CUSTOM_DL_PATH="~/custom_dl_folder"
+CUSTOM_DL_PATH="godot_bin_download"
 TESTS=0
 FAILED=0
 
