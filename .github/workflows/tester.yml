@@ -53,6 +53,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
     - uses: ./
       with:
         version: "4.0.3"
@@ -67,6 +70,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
     - uses: ./
       with:
         version: "3.2.1"
@@ -88,6 +94,7 @@ jobs:
         path: "tester_GUT_v7.4.1"
         test-timeout: "2"
         minimum-pass: "0.7"
+        import-time: "3"
   v3-fail-80percent:
     runs-on: ubuntu-latest
     steps:
@@ -99,6 +106,7 @@ jobs:
         path: "tester_GUT_v7.4.1"
         test-timeout: "2"
         minimum-pass: "0.8"
+        import-time: "3"
   v3-fail-100percent:
     runs-on: ubuntu-latest
     steps:
@@ -108,6 +116,7 @@ jobs:
       with:
         version: "3.2.2"
         path: "tester_GUT_v7.4.1"
+        import-time: "3"
   v3-rc2:
     runs-on: ubuntu-latest
     steps:
@@ -118,6 +127,7 @@ jobs:
         version: "3.4"
         release_type: "rc2"
         path: "tester_GUT_v7.4.1"
+        import-time: "3"
   v3-direct:
     runs-on: ubuntu-latest
     steps:
@@ -131,6 +141,7 @@ jobs:
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         config-file: "res://.gutconf.json"
+        import-time: "3"
   v3-direct-assert:
     runs-on: ubuntu-latest
     steps:
@@ -144,6 +155,7 @@ jobs:
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
+        import-time: "3"
   v3-min70percent:
     runs-on: ubuntu-latest
     steps:
@@ -157,6 +169,7 @@ jobs:
         minimum-pass: "0.7"
         assert-check: "false"
         max-fails: "2"
+        import-time: "3"
   v3-direct70percent:
     runs-on: ubuntu-latest
     steps:
@@ -171,3 +184,4 @@ jobs:
         result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
         max-fails: "6"
+        import-time: "3"
