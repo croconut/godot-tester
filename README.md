@@ -9,9 +9,9 @@ Assumes that you have installed and are using GUT as your testing framework.
 
 You can also run your own testing framework if you have a scene that can run tests on load and then exit.
 
-You would use the 'direct-scene' option for that and you'll want the output for that scene to be similar to GUT's to help this action's pass / fail to work properly.
+You would use the 'direct-scene' option for that and you'll want the output for that scene to be an XML file following GUT's export results format: [GUT Export Document](https://bitwes.github.io/GutWiki/Godot4/Export-Test-Results.html)
 
-Refer to the folder "/tester/test/alt_mode" to see how to setup an override test scene for GUT, for use when GUT's CLI isn't working for your project.
+Refer to the folder "/tester_GUT_v9.0.1/test/alt_mode" to see how to setup an override test scene for GUT, for use when GUT's CLI isn't working for your project.
 
 ## setup
 
@@ -34,11 +34,11 @@ jobs:
     - uses: croconut/godot-tester@v3
       with:
         # required
-        version: "3.2.2"
+        version: "4.0.3"
         # the type of release of godot that the tests should be run with
         release_type: "rc2"
         is-mono: "true"
-        # the folder with your projects.godot file in it
+        # the folder with your project.godot file in it
         path: "tester"
         # how long to spend importing assets before tests are run
         import-time: "5"
@@ -49,23 +49,18 @@ jobs:
         minimum-pass: "0.6"
         # the directory containing Gut tests
         test-dir: "res://test"
-        # instead of running GUT's command line tool, you can run a GUT test scene if you have one
-        # set up correctly
-        # helps enable things like mouse mocking and current scene to work without any extra coding steps
-        # set up a scene like in this repo --> located at /tester/test/alt_mode/tests.tscn
-        # set up a script like in this repo --> located at /tester/test/alt_mode/cli_plugin.gd
-        # ensure cli_plugin.gd inherits from the GUT plugin
-        # and exits on test completion
-        # ensure tests.tscn uses your modified plugin script and check yes for run on load
+        # instead of running GUT's command line tool, 
+        # you can run a test scene if you have one
+        # set up a scene like in this repo --> located at /tester_GUT_v9.0.1/test/alt_mode/tests.tscn
+        # set up a script like in this repo --> located at /tester_GUT_v9.0.1/test/alt_mode/cli_test.gd
+        # ensure that the script exits on test completion
         # uses relative path from your godot project directory
-        direct-scene: "test/alt_mode/tests.tscn" 
+        direct-scene: "tester_GUT_v9.0.1/test/alt_mode/tests.tscn" 
         # default is false, set true to count asserts instead of tests
         assert-check: "true" 
         # not checked by default, set to a number to limit the 
         # maximum amount of failed tests for a passing test suite
         max-fails: 3  
-        # to ensure all SCRIPT ERRORs dont contribute to your failure rate        
-        ignore-errors: "true" 
         # default is GUTs default: 'res://.gutconfig.json'; set this to load a different config file
         config-file: "res://.myconfig.json" 
         # designate a custom url to download the godot binary from
@@ -79,5 +74,3 @@ jobs:
 The import process has been recently improved but you may still see issues until Godot has a native solution for CLI.
 
 The direct-scene and config-file options are mutually exclusive - if you use direct-scene you will need to edit that scene to reflect the GUT options you want to set.
-
-The direct scene files in /tester/test/alt_mode are a good starting point for your custom testing scene.
