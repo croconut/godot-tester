@@ -131,12 +131,10 @@ generate_run_options() {
         RUN_OPTIONS="${RUN_OPTIONS} -gconfig=${CONFIG_FILE}"
     fi
 
-    if [ "$IS_VERSION_FOUR" -eq "1" ]; then
-        # v4+ behavior
-        # you must use the --headless argument 
-        # rather than use a headless binary
-        RUN_OPTIONS="${RUN_OPTIONS} --headless"
-    fi
+    # v4+ behavior requires --headless
+    # v3 ignores the --headless argument anyways, so
+    # it's safe to always include it
+    RUN_OPTIONS="${RUN_OPTIONS} --headless"
 }
 
 check_by_test() {
