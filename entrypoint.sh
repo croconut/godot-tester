@@ -31,7 +31,7 @@ source ./test_runner_lib/functions.sh
 
 cd ./${PROJECT_DIRECTORY}
 
-check_godot_version
+check_if_version_four
 download_godot
 run_tests
 analyze_test_results

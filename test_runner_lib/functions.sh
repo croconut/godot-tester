@@ -9,7 +9,7 @@ ret() { cat /tmp/capture.out; }
 # https://stackoverflow.com/questions/893585/how-to-parse-xml-in-bash/2608159#2608159
 rdom () { local IFS=\> ; read -d \< E C ;}
 
-check_godot_version() {
+check_if_version_four() {
     local version=$GODOT_VERSION
     local version_three=3
  
@@ -17,9 +17,9 @@ check_godot_version() {
     version=${version#v}
  
     # Extract the major version number from the version string
-    local current_version=$(echo "$version" | cut -d. -f1)
+    local current_major_version=$(echo "$version" | cut -d. -f1)
  
-    if [ "$current_version" -gt "$version_three" ]; then
+    if [ "$current_major_version" -gt "$version_three" ]; then
         # v4+ behavior
         IS_VERSION_FOUR=1
     fi
