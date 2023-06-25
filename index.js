@@ -104,9 +104,14 @@ function delete_gut_rebuilder() {
 }
 
 function delete_godot() {
-  unlinkSync('./addons/gut/.cli_add/__rebuilder.gd');
-  unlinkSync('./addons/gut/.cli_add/__rebuilder_scene.tscn');
-
+  let rebuilder_gd = './addons/gut/.cli_add/__rebuilder.gd';
+  let rebuilder_tscn = './addons/gut/.cli_add/__rebuilder_scene.tscn';
+  if (existsSync(rebuilder_gd)) {
+    unlinkSync(rebuilder_gd);
+  }
+  if (existsSync(rebuilder_tscn)) {
+    unlinkSync(rebuilder_tscn);
+  }
 }
 
 // doing all these at once since they're intertwined: the url & the final executable path
