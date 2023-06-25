@@ -18,12 +18,6 @@ check_if_version_four() {
     fi
 }
 
-create_mono_folder() {
-    if [ "$IS_MONO" = "true" ]; then
-        mkdir /home/user/.local/share/godot/mono/GodotNuGetFallbackFolder
-    fi
-}
-
 delete_godot() {
     rm -rf ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}
     rm -f ${CUSTOM_DL_PATH}/${FULL_GODOT_NAME_EXT}.zip
@@ -142,7 +136,7 @@ generate_run_options() {
         # you must use the --headless argument 
         # rather than use a headless binary
         RUN_OPTIONS="${RUN_OPTIONS} --headless"
-    fi 
+    fi
 }
 
 check_by_test() {
@@ -249,7 +243,6 @@ run_tests() {
     # Added --headless to the import step to account for v4+ behavior
     # this argument on v3.x is simply ignored
     echo "running imports ..."
-    
     timeout ${IMPORT_TIME} "${GODOT_EXECUTABLE}" --headless --editor addons/gut/.cli_add/__rebuilder_scene.tscn
     # After the imports are done, we can run the tests
     echo "running tests ..."
