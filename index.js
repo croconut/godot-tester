@@ -153,7 +153,7 @@ async function unzip_godot({godot_name_ext}) {
 async function download_godot(INPUT, generated_data) {
   // set godot executable name + url 
   [generated_data.godot_name, generated_data.godot_name_ext, generated_data.dl_url, generated_data.godot_executable] = 
-    generate_dl_url(INPUT, generated_data);
+    generate_all_godot_paths(INPUT, generated_data);
 
   // delete and recreate the dl folder, in case there was a broken godot from a previous run
   create_required_folders();
