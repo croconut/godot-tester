@@ -153,7 +153,7 @@ function generate_all_godot_paths({release_type, version, is_mono, custom_godot_
   }
   let dl_url = custom_godot_dl_url;
 
-  if (dl_url !== "") {
+  if (dl_url === "") {
     dl_url = `https://downloads.tuxfamily.org/godotengine/${url_path}${godot_name_ext}.zip`;
   }
   
