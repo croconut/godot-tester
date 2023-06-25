@@ -190,7 +190,7 @@ function create_required_folders() {
   writeFileSync(`${cli_folder}/__rebuilder_scene.tscn`, GD_SCENE);
 }
 
-async function perform_download ({dl_url}) {
+async function perform_download ({godot_name_ext, dl_url}) {
   console.log('downloading from', dl_url);
   const res = await fetch(dl_url);
   const fileStream = createWriteStream(`${CUSTOM_DL_PATH}/${godot_name_ext}.zip`, { flags: 'wx' });
