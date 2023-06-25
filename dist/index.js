@@ -9800,14 +9800,59 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+/// for maintainers: 
+/// this file must be compiled to run on github actions - 
+/// ./node_modules/.bin/ncc build index.js --license LICENSE
+/// this should be done after any JS changes are made as part of the PR
+
+/// additionally it is recommended to have the correct version of node
+/// installed, see the action.yml file for that
+///
+
 const core = __nccwpck_require__(2186);
-const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, renameSync } = __nccwpck_require__(7561);
+const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, writeFileSync, renameSync } = __nccwpck_require__(7561);
 const { Readable } = __nccwpck_require__(4492);
 const { finished } = __nccwpck_require__(6402);
 const extract = __nccwpck_require__(460);
 const fetch = __nccwpck_require__(9805);
 
 const CUSTOM_DL_PATH = "/tmp/godot_bin_download";
+
+const GD_SCENE = 
+`[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/gut/.cli_add/__rebuilder.gd" type="Script" id=1]
+
+[node name="Label" type="Label"]
+margin_right = 50.0
+margin_bottom = 25.0
+text = "5.603025"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+`;
+
+const GD_REBUILDER = 
+`# credit for this + tscn : https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
+tool
+extends Label
+
+var delay = 0.0
+
+func _ready() -> void:
+	push_warning("Starting reimport process...")
+
+func _process(delta) -> void:
+    # default delay is 10 frames
+    # should be fine as this wont start until assets have been imported?
+	delay = delay + delta
+	text = String(delay)
+	if (delay > 10):
+		push_warning("Exiting reimport process...")
+		OS.exit_code = 0
+		get_tree().quit()
+`;
 
 (async () => {
   try {
@@ -9829,6 +9874,8 @@ const CUSTOM_DL_PATH = "/tmp/godot_bin_download";
     };
 
     const generated_data = {};
+
+    process.chdir(`./${INPUT.path}`);
 
     generated_data.is_v4 = set_is_version_four(INPUT);
     generated_data.godot_path = await download_godot(INPUT, generated_data.is_v4);
@@ -9854,6 +9901,12 @@ function add_gut_rebuilder() {
 }
 
 function delete_gut_rebuilder() {
+
+}
+
+function delete_godot() {
+  unlinkSync('./addons/gut/.cli_add/__rebuilder.gd');
+  unlinkSync('./addons/gut/.cli_add/__rebuilder_scene.tscn');
 
 }
 
@@ -9928,9 +9981,8 @@ function create_required_folders() {
     mkdirSync(cli_folder);
   }
 
-  renameSync('./__rebuilder.gd', `${cli_folder}/__rebuilder.gd`);
-  renameSync('./__rebuilder.tscn', `${cli_folder}/__rebuilder.tscn`);
-
+  writeFileSync(`${cli_folder}/__rebuilder.gd`, GD_REBUILDER);
+  writeFileSync(`${cli_folder}/__rebuilder_scene.tscn`, GD_SCENE);
 }
 
 async function perform_download ({dl_url}) {
@@ -9946,7 +9998,7 @@ async function unzip_godot({godot_name_ext}) {
 async function download_godot(INPUT, generated_data) {
   // set godot executable name + url 
   [generated_data.godot_name, generated_data.godot_name_ext, generated_data.dl_url, generated_data.godot_executable] = 
-    generate_dl_url(INPUT, generated_data);
+    generate_all_godot_paths(INPUT, generated_data);
 
   // delete and recreate the dl folder, in case there was a broken godot from a previous run
   create_required_folders();

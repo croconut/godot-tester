@@ -8,13 +8,49 @@
 ///
 
 const core = require('@actions/core');
-const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, renameSync } = require('node:fs');
+const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, writeFileSync, renameSync } = require('node:fs');
 const { Readable } = require('node:stream');
 const { finished } = require('node:stream/promises');
 const extract = require('extract-zip');
 const fetch = require('cross-fetch');
 
 const CUSTOM_DL_PATH = "/tmp/godot_bin_download";
+
+const GD_SCENE = 
+`[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/gut/.cli_add/__rebuilder.gd" type="Script" id=1]
+
+[node name="Label" type="Label"]
+margin_right = 50.0
+margin_bottom = 25.0
+text = "5.603025"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+`;
+
+const GD_REBUILDER = 
+`# credit for this + tscn : https://github.com/Kersoph/open-sequential-logic-simulation/pull/4/files
+tool
+extends Label
+
+var delay = 0.0
+
+func _ready() -> void:
+	push_warning("Starting reimport process...")
+
+func _process(delta) -> void:
+    # default delay is 10 frames
+    # should be fine as this wont start until assets have been imported?
+	delay = delay + delta
+	text = String(delay)
+	if (delay > 10):
+		push_warning("Exiting reimport process...")
+		OS.exit_code = 0
+		get_tree().quit()
+`;
 
 (async () => {
   try {
@@ -36,6 +72,8 @@ const CUSTOM_DL_PATH = "/tmp/godot_bin_download";
     };
 
     const generated_data = {};
+
+    process.chdir(`./${INPUT.path}`);
 
     generated_data.is_v4 = set_is_version_four(INPUT);
     generated_data.godot_path = await download_godot(INPUT, generated_data.is_v4);
@@ -61,6 +99,12 @@ function add_gut_rebuilder() {
 }
 
 function delete_gut_rebuilder() {
+
+}
+
+function delete_godot() {
+  unlinkSync('./addons/gut/.cli_add/__rebuilder.gd');
+  unlinkSync('./addons/gut/.cli_add/__rebuilder_scene.tscn');
 
 }
 
@@ -135,9 +179,8 @@ function create_required_folders() {
     mkdirSync(cli_folder);
   }
 
-  renameSync('./__rebuilder.gd', `${cli_folder}/__rebuilder.gd`);
-  renameSync('./__rebuilder.tscn', `${cli_folder}/__rebuilder.tscn`);
-
+  writeFileSync(`${cli_folder}/__rebuilder.gd`, GD_REBUILDER);
+  writeFileSync(`${cli_folder}/__rebuilder_scene.tscn`, GD_SCENE);
 }
 
 async function perform_download ({dl_url}) {
