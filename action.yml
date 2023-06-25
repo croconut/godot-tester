@@ -59,7 +59,7 @@ inputs:
     default: "test_results.xml"
 
 runs:
-  using: 'node20'
+  using: 'node16'
   main: 'index.js'
 
 branding:
