@@ -9888,7 +9888,7 @@ func _process(delta) -> void:
     console.log('beginning godot-tester with input', INPUT);
 
     generated_data.is_v4 = set_is_version_four(INPUT);
-    generated_data.godot_path = await download_godot(INPUT, generated_data.is_v4);
+    generated_data.godot_path = await download_godot(INPUT, generated_data);
     generated_data.run_options = generate_run_options(INPUT, generated_data.is_v4);
     generated_data.test_results = await run_tests(INPUT, generated_data);
   
