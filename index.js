@@ -1,3 +1,12 @@
+/// for maintainers: 
+/// this file must be compiled to run on github actions - 
+/// ./node_modules/.bin/ncc build index.js --license LICENSE
+/// this should be done after any JS changes are made as part of the PR
+
+/// additionally it is recommended to have the correct version of node
+/// installed, see the action.yml file for that
+///
+
 const core = require('@actions/core');
 const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, renameSync } = require('node:fs');
 const { Readable } = require('node:stream');
