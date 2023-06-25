@@ -75,6 +75,7 @@ func _process(delta) -> void:
     const generated_data = {};
 
     process.chdir(`./${INPUT.path}`);
+    console.log('beginning godot-tester with input', INPUT);
 
     generated_data.is_v4 = set_is_version_four(INPUT);
     generated_data.godot_path = await download_godot(INPUT, generated_data.is_v4);
@@ -153,7 +154,7 @@ function generate_all_godot_paths({release_type, version, is_mono, custom_godot_
   }
   let dl_url = custom_godot_dl_url;
 
-  if (dl_url === "") {
+  if (!dl_url) {
     dl_url = `https://downloads.tuxfamily.org/godotengine/${url_path}${godot_name_ext}.zip`;
   }
   
