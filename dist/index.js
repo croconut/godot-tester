@@ -9663,6 +9663,14 @@ module.exports = require("node:fs");
 
 /***/ }),
 
+/***/ 612:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:os");
+
+/***/ }),
+
 /***/ 4492:
 /***/ ((module) => {
 
@@ -9813,6 +9821,7 @@ const core = __nccwpck_require__(2186);
 const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, writeFileSync, renameSync } = __nccwpck_require__(7561);
 const { Readable } = __nccwpck_require__(4492);
 const { finished } = __nccwpck_require__(6402);
+const { homedir } = __nccwpck_require__(612);
 const extract = __nccwpck_require__(460);
 const fetch = __nccwpck_require__(9805);
 
@@ -9905,9 +9914,14 @@ function delete_gut_rebuilder() {
 }
 
 function delete_godot() {
-  unlinkSync('./addons/gut/.cli_add/__rebuilder.gd');
-  unlinkSync('./addons/gut/.cli_add/__rebuilder_scene.tscn');
-
+  let rebuilder_gd = './addons/gut/.cli_add/__rebuilder.gd';
+  let rebuilder_tscn = './addons/gut/.cli_add/__rebuilder_scene.tscn';
+  if (existsSync(rebuilder_gd)) {
+    unlinkSync(rebuilder_gd);
+  }
+  if (existsSync(rebuilder_tscn)) {
+    unlinkSync(rebuilder_tscn);
+  }
 }
 
 // doing all these at once since they're intertwined: the url & the final executable path
@@ -9958,8 +9972,8 @@ function generate_all_godot_paths({release_type, version, is_mono, custom_godot_
 
 // we additionally fill the cli folder with our rebuilder scene info
 function create_required_folders() {
-  const cache = '~/.cache';
-  const godot_cfg = '~/config/godot';
+  const cache = homedir() + '/.cache';
+  const godot_cfg = homedir() + '/.config/godot';
   const cli_folder = './addons/gut/.cli_add';
 
   // recreating this folder to clear out potential old downloads
