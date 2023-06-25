@@ -11,6 +11,7 @@ const core = require('@actions/core');
 const { rmdirSync, unlinkSync, existsSync, mkdirSync, createWriteStream, writeFileSync, renameSync } = require('node:fs');
 const { Readable } = require('node:stream');
 const { finished } = require('node:stream/promises');
+const { homedir } = require('node:os');
 const extract = require('extract-zip');
 const fetch = require('cross-fetch');
 
@@ -156,8 +157,8 @@ function generate_all_godot_paths({release_type, version, is_mono, custom_godot_
 
 // we additionally fill the cli folder with our rebuilder scene info
 function create_required_folders() {
-  const cache = '~/.cache';
-  const godot_cfg = '~/config/godot';
+  const cache = homedir() + '/.cache';
+  const godot_cfg = homedir() + '/.config/godot';
   const cli_folder = './addons/gut/.cli_add';
 
   // recreating this folder to clear out potential old downloads
