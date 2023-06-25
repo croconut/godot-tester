@@ -1,4 +1,12 @@
-FROM croconut/linux-downloader
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    dotnet-sdk-6.0 \
+    wget \
+    unzip \
+    fontconfig \
+    bc
 
 COPY test_runner_lib /test_runner_lib
 COPY entrypoint.sh /entrypoint.sh
