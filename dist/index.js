@@ -10000,6 +10000,7 @@ function create_required_folders() {
 }
 
 async function perform_download ({dl_url}) {
+  console.log('downloading from', dl_url);
   const res = await fetch(dl_url);
   const fileStream = createWriteStream(CUSTOM_DL_PATH, { flags: 'wx' });
   await finished(Readable.fromWeb(res.body).pipe(fileStream));
