@@ -1,14 +1,16 @@
-FROM node:slim
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update && apt-get install -y \
+    dotnet-sdk-6.0 \
+    wget \
+    unzip \
+    fontconfig \
+    bc
+
+COPY test_runner_lib /test_runner_lib
+COPY entrypoint.sh /entrypoint.sh
 COPY __rebuilder.gd /__rebuilder.gd
 COPY __rebuilder_scene.tscn /__rebuilder_scene.tscn
 
-WORKDIR /github/workspace
-
-COPY package.json ./package.json
-COPY package-lock.json ./package-lock.json
-RUN npm ci --omit=dev
-
-COPY index.js ./index.js
-
-ENTRYPOINT [ "node", "./index.js" ]
+ENTRYPOINT [ "bash", "/entrypoint.sh" ]

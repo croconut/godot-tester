@@ -59,8 +59,8 @@ inputs:
     default: "test_results.xml"
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'node16'
+  main: 'dist/index.js'
 
 branding:
   icon: 'chevron-right'
