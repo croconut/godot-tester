@@ -1,9 +1,7 @@
-FROM croconut/linux-downloader
-RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
- && dpkg -i packages-microsoft-prod.deb \
- && packages-microsoft-prod.deb
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y dotnet-sdk-6.0
+RUN apt-get update && apt-get install -y 
 
 COPY test_runner_lib /test_runner_lib
 COPY entrypoint.sh /entrypoint.sh
