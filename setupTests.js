@@ -23,3 +23,4 @@ jest.mock('yargs', () => {
 });
 
 jest.mock('fs');
+jest.mock('https');

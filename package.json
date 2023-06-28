@@ -11,6 +11,7 @@
   "author": "croconut",
   "license": "ISC",
   "dependencies": {
+    "decompress": "^4.2.1",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
