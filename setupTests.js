@@ -21,3 +21,5 @@ jest.mock('yargs', () => {
         }
     }
 });
+
+jest.mock('fs');
