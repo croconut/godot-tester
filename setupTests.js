@@ -24,3 +24,5 @@ jest.mock('yargs', () => {
 
 jest.mock('fs');
 jest.mock('https');
+
+process.env.NODE_DIR = __dirname;
