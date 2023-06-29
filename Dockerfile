@@ -13,10 +13,9 @@ COPY package.json /package.json
 COPY package-lock.json /package-lock.json
 COPY index.js /index.js
 COPY .nvmrc /.nvmrc
+COPY assets /assets
+
 RUN chmod +x /index.js
 RUN npm install
-
-COPY __rebuilder.gd /__rebuilder.gd
-COPY __rebuilder_scene.tscn /__rebuilder_scene.tscn
 
 ENTRYPOINT ["/index.js"]
