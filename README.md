@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-tester@v4.1
+    - uses: croconut/godot-tester@v5
       with:
         # required
         version: "4.0.3"
