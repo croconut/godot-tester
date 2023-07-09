@@ -59,24 +59,37 @@ inputs:
     default: "test_results.xml"
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
   args:
-  - ${{ inputs.version }}
-  - ${{ inputs.release_type }}
-  - ${{ inputs.path }}
-  - ${{ inputs.is-mono }}
-  - ${{ inputs.import-time }}
-  - ${{ inputs.test-timeout }}
-  - ${{ inputs.minimum-pass }}
-  - ${{ inputs.test-dir }}
-  - ${{ inputs.direct-scene }}
-  - ${{ inputs.assert-check }}
-  - ${{ inputs.max-fails }}
-  - ${{ inputs.config-file }}
-  - ${{ inputs.custom-godot-dl-url }}
-  - ${{ inputs.result-output-file }}
-
+    - --godot-version
+    - ${{ inputs.version }}
+    - --release-type
+    - ${{ inputs.release_type }}
+    - --path
+    - ${{ inputs.path }}
+    - --is-mono
+    - ${{ inputs.is-mono }}
+    - --import-time
+    - ${{ inputs.import-time }}
+    - --test-timeout
+    - ${{ inputs.test-timeout }}
+    - --minimum-pass
+    - ${{ inputs.minimum-pass }}
+    - --test-dir
+    - ${{ inputs.test-dir }}
+    - --direct-scene
+    - ${{ inputs.direct-scene }}
+    - --assert-check
+    - ${{ inputs.assert-check }}
+    - --max-fails
+    - ${{ inputs.max-fails }}
+    - --config-file
+    - ${{ inputs.config-file }}
+    - --custom-godot-dl-url
+    - ${{ inputs.custom-godot-dl-url }}
+    - --result-output-file
+    - ${{ inputs.result-output-file }}
 
 branding:
   icon: 'chevron-right'

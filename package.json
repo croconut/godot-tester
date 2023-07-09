@@ -1,0 +1,21 @@
+{
+  "name": "godot-tester",
+  "version": "5.0.0",
+  "description": "![Build tester](https://github.com/croconut/godot-tester/workflows/Build%20tester/badge.svg)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "croconut",
+  "license": "ISC",
+  "dependencies": {
+    "decompress": "^4.2.1",
+    "fast-xml-parser": "^4.2.5",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}

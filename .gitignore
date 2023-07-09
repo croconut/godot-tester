@@ -14,3 +14,6 @@ export.cfg
 # Mono-specific ignores
 .mono/
 data_*/
+
+# nodejs
+node_modules/
