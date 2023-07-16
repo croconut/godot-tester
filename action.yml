@@ -59,37 +59,8 @@ inputs:
     default: "test_results.xml"
 
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - --godot-version
-    - ${{ inputs.version }}
-    - --release-type
-    - ${{ inputs.release_type }}
-    - --path
-    - ${{ inputs.path }}
-    - --is-mono
-    - ${{ inputs.is-mono }}
-    - --import-time
-    - ${{ inputs.import-time }}
-    - --test-timeout
-    - ${{ inputs.test-timeout }}
-    - --minimum-pass
-    - ${{ inputs.minimum-pass }}
-    - --test-dir
-    - ${{ inputs.test-dir }}
-    - --direct-scene
-    - ${{ inputs.direct-scene }}
-    - --assert-check
-    - ${{ inputs.assert-check }}
-    - --max-fails
-    - ${{ inputs.max-fails }}
-    - --config-file
-    - ${{ inputs.config-file }}
-    - --custom-godot-dl-url
-    - ${{ inputs.custom-godot-dl-url }}
-    - --result-output-file
-    - ${{ inputs.result-output-file }}
+  using: 'node16'
+  main: 'build/index.js'
 
 branding:
   icon: 'chevron-right'
