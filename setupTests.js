@@ -1,6 +1,3 @@
-const path = require('path');
-const { matcherHint } = require('jest-matcher-utils');
-
 process.env = {
     ...process.env,
     THIS_ACTION_DIR: __dirname,
@@ -19,20 +16,6 @@ process.env = {
     'INPUT_CUSTOM-GODOT-DL-URL': '',
     'INPUT_RESULT-OUTPUT-FILE': ''
 };
-
-beforeEach(() => {
-    jest.resetModules();    
-});
-
-// enable path testing on windows + unix
-expect.extend({
-    toMatchPath: (actual, expected) => {
-        const normalised = path.join(...expected.split("/"));
-        return actual === normalised
-            ? { pass: true, message: `${matcherHint(".not.toMatchPath")}` }
-            : { pass: false, message: `${matcherHint(".toMatchPath")}` };
-    },
-});
 
 jest.mock('fs', () => ({
     promises: {
