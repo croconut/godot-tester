@@ -7,7 +7,7 @@ describe('getProjectPath', () => {
         oldWorkspaceEnv = process.env.GITHUB_WORKSPACE;
         process.env.GITHUB_WORKSPACE = '/home/runner/work/MyProject/MyProject';
         process.env['INPUT_PATH'] = './';
-        getProjectPath = require('./GetProjectPath');
+        getProjectPath = require('../GetProjectPath');
     });
 
     afterEach(() => {
@@ -17,28 +17,28 @@ describe('getProjectPath', () => {
     describe('given a project path', () => {
         it('should join the GITHUB_WORKSPACE & project path', () => {
             process.env['INPUT_PATH'] = 'SubDir';
-            getProjectPath = require('./GetProjectPath');
+            getProjectPath = require('../GetProjectPath');
             const projectPath = getProjectPath();
             expect(projectPath).toMatchPath('/home/runner/work/MyProject/MyProject/SubDir');
         });
 
         it('should join the GITHUB_WORKSPACE & project path', () => {
             process.env['INPUT_PATH'] = 'SubDir/SubDir';
-            getProjectPath = require('./GetProjectPath');
+            getProjectPath = require('../GetProjectPath');
             const projectPath = getProjectPath();
             expect(projectPath).toMatchPath('/home/runner/work/MyProject/MyProject/SubDir/SubDir');
         });
 
         it('should join the GITHUB_WORKSPACE & project path', () => {
             process.env['INPUT_PATH'] = './SubDir';
-            getProjectPath = require('./GetProjectPath');
+            getProjectPath = require('../GetProjectPath');
             const projectPath = getProjectPath();
             expect(projectPath).toMatchPath('/home/runner/work/MyProject/MyProject/SubDir');
         });
 
         it('should join the GITHUB_WORKSPACE & project path', () => {
             process.env['INPUT_PATH'] = './SubDir/SubDir/';
-            getProjectPath = require('./GetProjectPath');
+            getProjectPath = require('../GetProjectPath');
             const projectPath = getProjectPath();
             expect(projectPath).toMatchPath('/home/runner/work/MyProject/MyProject/SubDir/SubDir/');
         });

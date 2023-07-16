@@ -6,7 +6,7 @@ const yargs = require('yargs');
 
 const getProjectPath = require('../GetProjectPath/GetProjectPath');
 
-const analyzeTestResults = require('./AnalyzeTestResults');
+const analyzeTestResults = require('../lib/AnalyzeTestResults');
 describe('analyzeTestResults', () => {
     beforeEach(() => {
         jest.clearAllMocks();
