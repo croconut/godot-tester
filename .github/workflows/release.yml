@@ -9,16 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build
-        run: npm ci && npm run build
-      - name: godot-tester
-        uses: softprops/action-gh-release@v1
+      - uses: actions/checkout@v2
+      - run: npm ci && npm run build
+      - uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: _index.cjs
           name: godot-tester
-          generate_release_notes: true
+          body_path: ${{ github.workspace }}/release_text.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
