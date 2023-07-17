@@ -2,12 +2,14 @@
   "name": "godot-tester",
   "version": "5.0.0",
   "description": "![Build tester](https://github.com/croconut/godot-tester/workflows/Build%20tester/badge.svg)",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "jest --passWithNoTests",
-    "lint": "eslint *.js",
-    "start": "node index.js"
+    "build": "esbuild index.ts --platform=node --target=node16 --bundle --outfile=_index.cjs",
+    "publish": "npm run build",
+    "start": "npm run build && node _index.cjs",
+    "lint": "eslint **/*.ts"
   },
+  "type": "module",
   "keywords": [],
   "author": "croconut",
   "license": "ISC",
@@ -15,12 +17,16 @@
     "@actions/core": "^1.10.0",
     "decompress": "^4.2.1",
     "fast-xml-parser": "^4.2.5",
-    "jest-extended": "^4.0.0"
+    "semver": "^7.5.4"
   },
   "devDependencies": {
-    "esbuild": "^0.18.11",
+    "@types/decompress": "^4.2.4",
+    "@types/semver": "^7.5.0",
+    "esbuild": "^0.18.13",
     "eslint": "^8.45.0",
     "eslint-config-google": "^0.14.0",
-    "jest": "^29.5.0"
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.1.6"
   }
 }

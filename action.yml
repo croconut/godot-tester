@@ -60,7 +60,7 @@ inputs:
 
 runs:
   using: 'node16'
-  main: 'build/index.js'
+  main: '_index.cjs'
 
 branding:
   icon: 'chevron-right'
