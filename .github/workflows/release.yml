@@ -20,3 +20,5 @@ jobs:
           files: _index.cjs
           name: godot-tester
           generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
