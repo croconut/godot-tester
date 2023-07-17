@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "4.0.3"
@@ -16,10 +16,10 @@ jobs:
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
   v4-rc2:
-    runs-on: ubuntu-latest'
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "4.0.3"
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "4.0.3"
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "4.0.3"
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "4.0.3"
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "3.2.1"
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       continue-on-error: true
       with:
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       continue-on-error: true
       with:
@@ -114,7 +114,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       continue-on-error: true
       with:
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       continue-on-error: true
       with:
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "3.2.2"
@@ -152,7 +152,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "3.2.2"
@@ -167,7 +167,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       continue-on-error: true
       with:
@@ -182,7 +182,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm run build
+    - run: npm ci && npm run build
     - uses: ./
       with:
         version: "3.2.2"
