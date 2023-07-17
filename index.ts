@@ -1,46 +1,48 @@
 #!/usr/bin/env node
-import { setFailed } from '@actions/core';
-import downloadGodot from './lib/DownloadGodot.js';
-import runGodotImport from './lib/RunGodotImport.js';
-import executeGutTests from './lib/ExecuteGutTests.js';
-import analyzeTestResults from './lib/AnalyzeTestResults.js';
-import getCliArgs from './lib/GetCliArgs.js';
+import { setFailed } from '@actions/core'
+import downloadGodot from './lib/DownloadGodot.js'
+import runGodotImport from './lib/RunGodotImport.js'
+import executeGutTests from './lib/ExecuteGutTests.js'
+import analyzeTestResults from './lib/AnalyzeTestResults.js'
+import getCliArgs from './lib/GetCliArgs.js'
 
-process.env.THIS_ACTION_DIR = __dirname;
+process.env.THIS_ACTION_DIR = __dirname
 
 interface customError {
   msg: string
 }
 
-async function main(): Promise<void> {
+async function main (): Promise<void> {
   try {
-    const input = getCliArgs();
-    const exePath = await downloadGodot(input);
-    console.log('exePath: ', exePath);
+    const input = getCliArgs()
+    const exePath = await downloadGodot(input)
+    console.log('exePath: ', exePath)
 
-    runGodotImport(input, exePath);
-    executeGutTests(input, exePath);
-    const results = analyzeTestResults(input);
+    runGodotImport(input, exePath)
+    executeGutTests(input, exePath)
+    const results = analyzeTestResults(input)
 
-    console.log('Test count: ', results.testCount);
-    console.log('Fail count: ', results.failCount);
-    console.log('Passrate: ', results.passRate);
-    console.log('Success: ', results.success);
+    console.log('Test count: ', results.testCount)
+    console.log('Fail count: ', results.failCount)
+    console.log('Passrate: ', results.passRate)
+    console.log('Success: ', results.success)
     if (!results.success) {
-      throw {msg: 'Test run failed'};
+      throw { msg: 'Test run failed' }
     }
   } catch (e: unknown) {
     // set msg so only custom errors fill messaging
     // all throws that get here must be testing failures
-    let customErr = e as customError;
-    if (customErr) {
-      setFailed(customErr.msg);
+    const customErr = e as customError
+    if (typeof e === 'object' && e !== null && 'msg' in e) {
+      setFailed(customErr.msg)
     } else {
-      setFailed('Unexpected error while testing');
+      setFailed('Unexpected error while testing')
     }
-    process.exit(1);
+    process.exit(1)
   }
-  process.exit(0);
+  process.exit(0)
 };
 
-main();
+// this would normally be a good error, but i actually dont care to await the main function
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+main()
