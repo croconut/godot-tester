@@ -1,5 +1,5 @@
 import {spawnSync} from 'child_process';
-import { ActionInput } from './GetCliArgs';
+import { ActionInput } from './GetCliArgs.js';
 
 function executeGutTests(input: Readonly<ActionInput>, exePath: string) {
   const {directScene, projectPath, godotFourPlus, testDir, resultOutputFile, configFile, testTimeout} = input;
