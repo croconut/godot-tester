@@ -8,13 +8,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - uses: ./
+    - id: test
+      uses: ./
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
         minimum-pass: "0.6"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
+    - name: ensure pass rate was invalid for passing or too high (should be about .636)
+      if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.pass-rate < 0.6 }}
+      run: |
+        echo "test pass rate too high / too low, job failed"
+        exit 1
   v4-rc2:
     runs-on: ubuntu-latest
     steps:
