@@ -101,7 +101,7 @@ jobs:
       if: ${{ always() && success() }}
       run: echo "bad_success=1" >> $GITHUB_OUTPUT
     - name: fail on success
-      if: ${{ always() && env.bad_success == 1 }}
+      if: ${{ always() && steps.bad_success.outputs.bad_success == 1 }}
       run: |
         echo "test did not fail, job failed"
         exit 1
