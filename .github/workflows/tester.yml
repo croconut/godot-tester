@@ -26,17 +26,24 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - uses: ./
+    - id: test
+      uses: ./
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
         release_type: "rc2"
+    - name: pass rate should be 1
+      if: ${{ steps.test.outputs.pass-rate < 0.999 }}
+      run: |
+        echo "test pass rate too low for success"
+        exit 1
   v4-direct:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - uses: ./
+    - id: test
+      uses: ./
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
@@ -44,21 +51,54 @@ jobs:
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         config-file: "res://.gutconf.json"
+    - name: ensure pass rate was invalid for passing or too high (should be about .636)
+      if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.pass-rate < 0.6 }}
+      run: |
+        echo "test pass rate too high / too low, job failed"
+        exit 1
+  v4-direct-assert-failure:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci && npm run build
+    - id: test
+      uses: ./
+      continue-on-error: true
+      with:
+        version: "4.0.3"
+        path: "tester_GUT_v9.0.1"
+        test-timeout: "45"
+        minimum-pass: "0.9"
+        direct-scene: "test/alt_mode/tests.tscn"
+        result-output-file: "direct_scene_xml_output.xml"
+        assert-check: "true"
+        max-fails: "6"     
+    - name: ensure pass rate was invalid for passing or too high (should be about .8)
+      if: ${{ steps.test.outputs.pass-rate > 0.89 || steps.test.outputs.success == 1 }}
+      run: |
+        echo "job did not fail like it should have"
+        exit 1
   v4-direct-assert:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - uses: ./
+    - id: test
+      uses: ./
       with:
         version: "4.0.3"
         path: "tester_GUT_v9.0.1"
         test-timeout: "45"
-        minimum-pass: "0.6"
+        minimum-pass: "0.75"
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
         max-fails: "6"     
+    - name: ensure pass rate was invalid for passing or too high (should be about .8)
+      if: ${{ steps.test.outputs.pass-rate > 0.89 || steps.test.outputs.pass-rate < 0.75 }}
+      run: |
+        echo "job pass rate is invalid"
+        exit 1
   v4-mono:
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +112,7 @@ jobs:
         is-mono: "true"
         test-timeout: "45"
         import-time: "25"
-        minimum-pass: "0.7"
+        minimum-pass: "0.98"
         assert-check: "false"
         max-fails: "2"  
   v3-mono-70percentfail:
