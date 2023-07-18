@@ -86,7 +86,7 @@ jobs:
         minimum-pass: "0.7"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
-    - name: fail if pass rate too low
+    - name: fail if pass rate too high
       if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.success == 1 }}
       run: |
         echo "test did not fail, job failed"
@@ -96,7 +96,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - name: test
+    - id: test
       uses: ./
       with:
         version: "3.2.2"
@@ -104,19 +104,32 @@ jobs:
         test-timeout: "2"
         minimum-pass: "0.7"
         import-time: "3"
+    - name: fail if pass rate too high
+      if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.success == 1 }}
+      run: |
+        echo "test did not fail, job failed"
+        exit 1
   v3-fail-80percent:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - uses: ./
+    - id: test
+      uses: ./
       with:
         version: "3.2.2"
         path: "tester_GUT_v7.4.1"
         test-timeout: "2"
         minimum-pass: "0.8"
         import-time: "3"
-  v3-fail-100percent:
+        test-dir: "res://test"
+        config-file: "res://.gutconf.json"
+    - name: fail if pass rate too high
+      if: ${{ steps.test.outputs.pass-rate >= 0.8 || steps.test.outputs.success == 1 }}
+      run: |
+        echo "test did not fail, job failed"
+        exit 1
+  v3-mostlydefaults:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
