@@ -126,14 +126,20 @@ async function downloadGodot (input: Readonly<ActionInput>): Promise<string> {
 
   const url = generateDownloadUrl(input)
   console.log('Downloading Godot from: ', url)
-  const godotZipPath = await performDownload(url, fileDownloadPath)
+  let godotZipPath: string
+  let unzippedFiles: decompress.File[]
+  try {
+    godotZipPath = await performDownload(url, fileDownloadPath)
+    console.log('Unzipping Godot...')
+    unzippedFiles = await decompress(godotZipPath, getTmpDir(input))
+  } catch(_e: unknown) {
+    throw { msg: "error downloading & unzipping godot, URL may be incorrect" }
+  }
 
-  console.log('Unzipping Godot...')
-  const unzippedFiles = await decompress(godotZipPath, getTmpDir(input))
   const executablePath = findExecutablePath(unzippedFiles)
 
   if (executablePath === undefined) {
-    throw new Error('Could not find executable in downloaded Godot zip')
+    throw { msg: 'Could not find executable in downloaded Godot zip' }
   };
 
   const executableFullPath = join(getTmpDir(input), executablePath.path)
