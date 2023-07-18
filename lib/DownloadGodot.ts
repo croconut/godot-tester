@@ -50,7 +50,7 @@ async function performDownload (url: URL, fileLocation: string): Promise<string>
 
 function generateGodotFilename (input: Readonly<ActionInput>): GodotFilenames {
   const { godotVersion, godotFourPlus, releaseType, isMono } = input
-  let fullGodotName = `Godot_v${godotVersion.format()}-${releaseType}`
+  let fullGodotName = `Godot_v${godotVersion}-${releaseType}`
   let fullGodotNameWithArch = ''
   if (godotFourPlus) {
     if (isMono) {
@@ -93,7 +93,7 @@ function generateDownloadUrl (input: Readonly<ActionInput>): URL {
     godotUrlPathSubdir = `/${releaseType}`
   };
 
-  let godotUrlPath = `${godotVersion.format()}${godotUrlPathSubdir}/`
+  let godotUrlPath = `${godotVersion}${godotUrlPathSubdir}/`
   if (isMono) {
     godotUrlPath += 'mono/'
   }

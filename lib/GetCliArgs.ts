@@ -1,9 +1,8 @@
 import { getInput } from '@actions/core'
-import { coerce, type SemVer } from 'semver'
 import { join } from 'path'
 
 export interface ActionInput {
-  godotVersion: SemVer
+  godotVersion: string
   projectPath: string
   godotFourPlus: boolean
   releaseType: string
@@ -26,7 +25,7 @@ export interface ActionInput {
 /// pulls arguments for this action directly from the env variables
 /// github sets and does minor checks for valid input
 export default function getCliArgs (): ActionInput {
-  const version = coerce(getInput('version'))
+  const version = getInput('version').replace(/^v/i, '').trim()
   const customUrlRaw = getInput('custom-godot-dl-url')
   const directScene = getInput('direct-scene')
   const maxFails = getInput('max-fails')
@@ -52,7 +51,7 @@ export default function getCliArgs (): ActionInput {
   const input: ActionInput = {
     projectPath: join(workspace, actionPath),
     godotVersion: version,
-    godotFourPlus: version.major > 3,
+    godotFourPlus: parseInt(version) > 3,
     releaseType: getInput('release_type'),
     path: getInput('path'),
     isMono: getInput('is-mono') !== 'false',
