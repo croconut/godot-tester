@@ -109,7 +109,7 @@ jobs:
       run: |
         echo "test did not fail, job failed"
         exit 1
-  v3-fail-80percent:
+  v3-timeout-fail:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -125,7 +125,7 @@ jobs:
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
     - name: fail if pass rate too high
-      if: ${{ steps.test.outputs.pass-rate >= 0.8 || steps.test.outputs.success == 1 }}
+      if: ${{ steps.test.outputs.pass-rate >= 0.1 || steps.test.outputs.success == 1 }}
       run: |
         echo "test did not fail, job failed"
         exit 1
