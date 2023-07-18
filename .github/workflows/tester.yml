@@ -89,14 +89,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
-    - uses: ./
-      continue-on-error: true
+    - name: test
+      uses: ./
       with:
         version: "3.2.2"
         path: "tester_GUT_v7.4.1"
         test-timeout: "2"
         minimum-pass: "0.7"
         import-time: "3"
+    - id: bad_success
+      if: ${{ always() && success() }}
+      run: echo ::set-output name=bad_success::1
+    - name: fail on success
+      if: ${{ always() && job.v3-2.steps.bad_success.outputs.bad_success == 1 }}
+      run: echo "test did not fail, job failed" && exit 1
   v3-fail-80percent:
     runs-on: ubuntu-latest
     steps:
