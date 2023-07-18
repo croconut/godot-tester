@@ -16,7 +16,7 @@ jobs:
         minimum-pass: "0.6"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
-    - name: ensure pass rate was invalid for passing or too high (should be about .636)
+    - name: ensure pass rate was not invalid for passing or too high (should be about .636)
       if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.pass-rate < 0.6 }}
       run: |
         echo "test pass rate too high / too low, job failed"
@@ -51,7 +51,7 @@ jobs:
         direct-scene: "test/alt_mode/tests.tscn"
         result-output-file: "direct_scene_xml_output.xml"
         config-file: "res://.gutconf.json"
-    - name: ensure pass rate was invalid for passing or too high (should be about .636)
+    - name: ensure pass rate was not invalid for passing or too high (should be about .636)
       if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.pass-rate < 0.6 }}
       run: |
         echo "test pass rate too high / too low, job failed"
@@ -73,7 +73,7 @@ jobs:
         result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
         max-fails: "6"     
-    - name: ensure pass rate was invalid for passing or too high (should be about .8)
+    - name: ensure test failed properly
       if: ${{ steps.test.outputs.pass-rate > 0.89 || steps.test.outputs.success == 1 }}
       run: |
         echo "job did not fail like it should have"
@@ -94,7 +94,7 @@ jobs:
         result-output-file: "direct_scene_xml_output.xml"
         assert-check: "true"
         max-fails: "6"     
-    - name: ensure pass rate was invalid for passing or too high (should be about .8)
+    - name: ensure pass rate was not invalid for passing or too high (should be about .8)
       if: ${{ steps.test.outputs.pass-rate > 0.89 || steps.test.outputs.pass-rate < 0.75 }}
       run: |
         echo "job pass rate is invalid"
@@ -166,7 +166,7 @@ jobs:
         import-time: "3"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
-    - name: fail if pass rate too high
+    - name: ensure test failed
       if: ${{ steps.test.outputs.pass-rate >= 0.1 || steps.test.outputs.success == 1 }}
       run: |
         echo "test did not fail, job failed"
