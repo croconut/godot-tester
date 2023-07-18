@@ -132,8 +132,8 @@ async function downloadGodot (input: Readonly<ActionInput>): Promise<string> {
     godotZipPath = await performDownload(url, fileDownloadPath)
     console.log('Unzipping Godot...')
     unzippedFiles = await decompress(godotZipPath, getTmpDir(input))
-  } catch(_e: unknown) {
-    throw { msg: "error downloading & unzipping godot, URL may be incorrect" }
+  } catch (_e: unknown) {
+    throw { msg: 'error downloading & unzipping godot, URL may be incorrect' }
   }
 
   const executablePath = findExecutablePath(unzippedFiles)
