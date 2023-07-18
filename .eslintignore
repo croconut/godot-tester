@@ -1,0 +1,5 @@
+build
+node_modules
+tester_*
+test_fixtures
+_index.cjs

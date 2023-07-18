@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "noImplicitAny": false,
+      "noEmitOnError": true,
+      "removeComments": false,
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "target": "es5",
+      "outDir": "dist",
+      "strictNullChecks": true,
+      "moduleResolution": "Node16"
+    },
+    "include": [
+      "index.ts",
+      "lib/*.ts"
+    ]
+}

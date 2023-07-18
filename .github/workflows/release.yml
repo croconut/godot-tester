@@ -1,0 +1,23 @@
+name: build node app for release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci && npm run build
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            _index.cjs
+            LICENSE
+          name: godot-tester
+          body_path: ${{ github.workspace }}/release_text.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

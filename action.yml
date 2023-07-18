@@ -57,39 +57,15 @@ inputs:
     description: "Filename to store and read results in XML"
     required: false
     default: "test_results.xml"
+outputs:
+  pass-rate:
+    description: "The test suites pass rate"
+  success:
+    description: "Whether this action succeeded, set to 1 on success"
 
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - --godot-version
-    - ${{ inputs.version }}
-    - --release-type
-    - ${{ inputs.release_type }}
-    - --path
-    - ${{ inputs.path }}
-    - --is-mono
-    - ${{ inputs.is-mono }}
-    - --import-time
-    - ${{ inputs.import-time }}
-    - --test-timeout
-    - ${{ inputs.test-timeout }}
-    - --minimum-pass
-    - ${{ inputs.minimum-pass }}
-    - --test-dir
-    - ${{ inputs.test-dir }}
-    - --direct-scene
-    - ${{ inputs.direct-scene }}
-    - --assert-check
-    - ${{ inputs.assert-check }}
-    - --max-fails
-    - ${{ inputs.max-fails }}
-    - --config-file
-    - ${{ inputs.config-file }}
-    - --custom-godot-dl-url
-    - ${{ inputs.custom-godot-dl-url }}
-    - --result-output-file
-    - ${{ inputs.result-output-file }}
+  using: 'node16'
+  main: '_index.cjs'
 
 branding:
   icon: 'chevron-right'
