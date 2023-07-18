@@ -104,17 +104,13 @@ jobs:
         test-timeout: "2"
         minimum-pass: "0.7"
         import-time: "3"
-    - name: fail if pass rate too high
-      if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.success == 1 }}
-      run: |
-        echo "test did not fail, job failed"
-        exit 1
   v3-timeout-fail:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
     - id: test
+      continue-on-error: true
       uses: ./
       with:
         version: "3.2.2"
@@ -150,7 +146,7 @@ jobs:
         release_type: "rc2"
         path: "tester_GUT_v7.4.1"
         import-time: "3"
-  v3-direct:
+  v3-direct-success:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

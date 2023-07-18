@@ -29,7 +29,7 @@ async function main (): Promise<void> {
     console.log('Passrate: ', results.passRate)
     console.log('Success: ', results.success)
 
-    if (results.success < 0.5) {
+    if (!results.success) {
       throw { msg: 'Test run failed' }
     }
   } catch (e: unknown) {
