@@ -4,7 +4,7 @@ import { XMLParser } from 'fast-xml-parser'
 
 import { type ActionInput } from './GetCliArgs.js'
 
-interface Results {
+export interface Results {
   testCount: number
   failCount: number
   passRate: number

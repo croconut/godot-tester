@@ -3,7 +3,7 @@ import { setFailed, setOutput } from '@actions/core'
 import downloadGodot from './lib/DownloadGodot.js'
 import runGodotImport from './lib/RunGodotImport.js'
 import executeGutTests from './lib/ExecuteGutTests.js'
-import analyzeTestResults from './lib/AnalyzeTestResults.js'
+import analyzeTestResults, { type Results } from './lib/AnalyzeTestResults.js'
 import getCliArgs from './lib/GetCliArgs.js'
 
 process.env.THIS_ACTION_DIR = __dirname
@@ -11,6 +11,8 @@ process.env.THIS_ACTION_DIR = __dirname
 interface customError {
   msg: string
 }
+
+let results: Results
 
 async function main (): Promise<void> {
   try {
@@ -20,16 +22,14 @@ async function main (): Promise<void> {
 
     runGodotImport(input, exePath)
     executeGutTests(input, exePath)
-    const results = analyzeTestResults(input)
+    results = analyzeTestResults(input)
 
     console.log('Test count: ', results.testCount)
     console.log('Fail count: ', results.failCount)
     console.log('Passrate: ', results.passRate)
     console.log('Success: ', results.success)
-    
-    // setting pass_rate for results parsing when needed
-    setOutput('pass-rate', results.passRate)
-    if (!results.success) {
+
+    if (results.success < 0.5) {
       throw { msg: 'Test run failed' }
     }
   } catch (e: unknown) {
@@ -41,9 +41,15 @@ async function main (): Promise<void> {
     } else {
       setFailed('Unexpected error while testing')
     }
+    if (results !== undefined) {
+      setOutput('pass-rate', results.passRate)
+    } else {
+      setOutput('pass-rate', 0)
+    }
     setOutput('success', 0)
     process.exit(1)
   }
+  setOutput('pass-rate', results.passRate)
   setOutput('success', 1)
   process.exit(0)
 };
