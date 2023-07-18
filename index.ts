@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { setFailed } from '@actions/core'
+import { setFailed, setOutput } from '@actions/core'
 import downloadGodot from './lib/DownloadGodot.js'
 import runGodotImport from './lib/RunGodotImport.js'
 import executeGutTests from './lib/ExecuteGutTests.js'
@@ -26,6 +26,9 @@ async function main (): Promise<void> {
     console.log('Fail count: ', results.failCount)
     console.log('Passrate: ', results.passRate)
     console.log('Success: ', results.success)
+    
+    // setting pass_rate for results parsing when needed
+    setOutput('pass-rate', results.passRate)
     if (!results.success) {
       throw { msg: 'Test run failed' }
     }
@@ -38,8 +41,10 @@ async function main (): Promise<void> {
     } else {
       setFailed('Unexpected error while testing')
     }
+    setOutput('success', 0)
     process.exit(1)
   }
+  setOutput('success', 1)
   process.exit(0)
 };
 

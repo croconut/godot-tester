@@ -57,6 +57,11 @@ inputs:
     description: "Filename to store and read results in XML"
     required: false
     default: "test_results.xml"
+outputs:
+  pass-rate:
+    description: "The test suites pass rate"
+  success:
+    description: "Whether this action succeeded, set to 1 on success"
 
 runs:
   using: 'node16'

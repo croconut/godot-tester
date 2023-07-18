@@ -75,6 +75,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm ci && npm run build
     - uses: ./
+      id: test
       continue-on-error: true
       with:
         version: "3.2.1"
@@ -85,11 +86,8 @@ jobs:
         minimum-pass: "0.7"
         test-dir: "res://test"
         config-file: "res://.gutconf.json"
-    - id: bad_success
-      if: ${{ always() && success() }}
-      run: echo "bad_success=1" >> $GITHUB_OUTPUT
-    - name: fail if test succeeded
-      if: ${{ always() && steps.bad_success.outputs.bad_success == 1 }}
+    - name: fail if pass rate too low
+      if: ${{ steps.test.outputs.pass-rate >= 0.7 || steps.test.outputs.success == 1 }}
       run: |
         echo "test did not fail, job failed"
         exit 1
