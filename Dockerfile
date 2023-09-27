@@ -1,21 +1,7 @@
-FROM ubuntu:22.04
+FROM docker.io/node:20-bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_ENV=production
-
-# prepare apt with node 20.x
-RUN apt-get update && apt-get install -y \
-    curl \
-    gnupg \
-    lsb-release \
-    dotnet-sdk-6.0 \
-    wget \
-    unzip \
-    fontconfig \
-    bc
-
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get update && apt-get install -y nodejs
 
 COPY lib /lib
 COPY package.json /package.json
