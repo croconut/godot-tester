@@ -6,7 +6,7 @@ jobs:
   v4:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "4.0.3"
@@ -17,7 +17,7 @@ jobs:
   v4-rc2:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "4.0.3"
@@ -26,7 +26,7 @@ jobs:
   v4-direct:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "4.0.3"
@@ -38,7 +38,7 @@ jobs:
   v4-direct-assert:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "4.0.3"
@@ -52,7 +52,7 @@ jobs:
   v4-mono:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "4.0.3"
@@ -67,7 +67,7 @@ jobs:
   v3-mono:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "3.2.1"
@@ -81,7 +81,7 @@ jobs:
   v3-2:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       continue-on-error: true
       with:
@@ -93,7 +93,7 @@ jobs:
   v3-fail-80percent:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       continue-on-error: true
       with:
@@ -105,7 +105,7 @@ jobs:
   v3-fail-100percent:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       continue-on-error: true
       with:
@@ -115,7 +115,7 @@ jobs:
   v3-rc2:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       continue-on-error: true
       with:
@@ -126,7 +126,7 @@ jobs:
   v3-direct:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "3.2.2"
@@ -140,7 +140,7 @@ jobs:
   v3-direct-assert:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "3.2.2"
@@ -154,7 +154,7 @@ jobs:
   v3-min70percent:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       continue-on-error: true
       with:
@@ -168,7 +168,7 @@ jobs:
   v3-direct70percent:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         version: "3.2.2"
