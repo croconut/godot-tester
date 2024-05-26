@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_ENV=production
 
-# prepare apt with node 16.x
+# prepare apt for node 20.x
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
