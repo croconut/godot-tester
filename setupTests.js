@@ -17,6 +17,7 @@ jest.mock('yargs', () => {
             maxFails: 0,
             configFile: '',
             customGodotDlUrl: '',
+            customGodotBinaryPath: '',
             resultOutputFile: ''
         }
     }
