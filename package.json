@@ -13,6 +13,7 @@
   "dependencies": {
     "decompress": "^4.2.1",
     "fast-xml-parser": "^4.2.5",
+    "follow-redirects": "^1.15.6",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

@@ -25,5 +25,6 @@ jest.mock('yargs', () => {
 
 jest.mock('fs');
 jest.mock('https');
+jest.mock('follow-redirects');
 
 process.env.THIS_ACTION_DIR = __dirname;
