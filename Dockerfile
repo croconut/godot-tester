@@ -3,6 +3,8 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_ENV=production
 
+WORKDIR /tester/
+
 # prepare apt for node 20.x
 RUN apt-get update && apt-get install -y \
     curl \
@@ -27,14 +29,15 @@ RUN set -uex; \
     apt-get update; \
     apt-get install nodejs -y;
 
-COPY lib /lib
-COPY package.json /package.json
-COPY package-lock.json /package-lock.json
-COPY index.js /index.js
-COPY .nvmrc /.nvmrc
-COPY assets /assets
-
-RUN chmod +x /index.js
+COPY package.json ./package.json
+COPY package-lock.json ./package-lock.json
+COPY .nvmrc ./.nvmrc
 RUN npm ci
 
-ENTRYPOINT ["/index.js"]
+COPY lib ./lib
+COPY assets ./assets
+COPY index.js ./index.js
+
+RUN chmod +x ./index.js
+
+ENTRYPOINT ["./index.js"]
