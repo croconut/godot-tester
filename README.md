@@ -63,8 +63,10 @@ jobs:
         max-fails: 3  
         # default is GUTs default: 'res://.gutconfig.json'; set this to load a different config file
         config-file: "res://.myconfig.json" 
-        # designate a custom url to download the godot binary from
+        # designate a custom url to download the godot binary from (e.g. https://download_url.com/godot/example_download.zip)
         custom-godot-dl-url: ""
+        # designate a custom path to execute the godot binary (e.g. relative_filename.exe)
+        custom-godot-binary-path: ""
         # relative path to the xml file to read / write GUT's results from, recommended
         # for direct-scene users to check this file if you have issues
         result-output-file: "test_results.xml"
