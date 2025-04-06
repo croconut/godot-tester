@@ -40,4 +40,4 @@ COPY index.js ./index.js
 
 RUN chmod +x ./index.js
 
-ENTRYPOINT ["./index.js"]
+ENTRYPOINT ["/tester/index.js"]
